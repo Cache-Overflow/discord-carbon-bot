@@ -6,6 +6,10 @@ bot.login(token);
 
 // test function
 bot.on("message", msg=>{
+    if (msg.author == bot.user) { // Prevent bot from responding to its own messages
+        return
+    }
+
     if (msg.content ==="Gabe") {
         msg.channel.send("Yeah hes dirtyy");
     }
