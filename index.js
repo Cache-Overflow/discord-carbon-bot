@@ -7,6 +7,8 @@ let recycle = false;
 
 bot.login(token);
 
+// bot.onn('not ready', ())
+
 bot.on('ready', () => {
     console.log("Logged in as " + bot.user.tag);
 
@@ -20,7 +22,7 @@ bot.on("message", msg=>{
     }
 
     // test cases
-    if (msg.content === "Carbon") {
+    if (msg.content.toLowerCase() === "carbon") {
         msg.channel.send("DESTROY");
     }
     if (msg.content === "ayy") {
@@ -47,7 +49,7 @@ bot.on("message", msg=>{
                             msg.channel.send("Missing statement.");
                             break;
                         }
-                        msg.channel.send("Your consumption produces " + food(args[2], args[3], msg.channel.id) + " kg of CO2!");
+                        food(args[2], args[3], msg.channel.id);
                         break;
                     case "t":
                     case "ct":
@@ -55,8 +57,22 @@ bot.on("message", msg=>{
                     case "carbontravel":
                         var method = args[2]; //Possible inputs: Taxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar
                         var dist = args[3];
+                        var APIInputs = ["Taxi", "ClassicBus", "EcoBus", "Coach", "NationalTrain", "LightRail", "Subway", "FerryOnFoot", "FerryInCar"];
 
-                        // if (method == undefined)
+                        //Dictionary with alternate spellings to the API call
+                        var dict = {
+                          "taxi": "Taxi",
+                          "bus": "ClassicBus",
+                          "Eco Bus": "EcoBus",
+                          "Train" : "NationalTrain"
+                        };
+
+                        // Checks if method can be passed to API call
+                        if (!APIInputs.includes(method)){
+                          msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
+                          break;
+                        }
+
                         // API Code
                         fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=${dist}&type=${method}`, {
                           "method": "GET",
@@ -78,8 +94,6 @@ bot.on("message", msg=>{
                         break;
                     default:
                         msg.channel.send("Missing statement.");
-
-
                 }
                 break;
             case "h":
@@ -87,14 +101,14 @@ bot.on("message", msg=>{
                 // in alphabetical order
                 msg.channel.send("```LIST OF COMMANDS:\n\n"
                     + ".calculate - calculate carbon emissions\n"
-                    + "\tfood - food (ex: .calculate f beef 2)\n"
-                    + "\t\tPossible inputs:\n\t\tMeats: Beef, Pork, Lamb\n"
-                    + "\t\tPoultry: Chicken, Turkey, Duck, Goose, Quail\n"
-                    + "\t\tSeafood: Fish, Shellfish\n"
-                    + "\t\tDairy: Milk, Cheese, Butter, Ice cream\n"
-                    + "\t\tWater: Tap, Bottled, Fancy bottled\n"
-                    + "\ttravel - travel (ex: .calculate t train 100)\n"
-                    + "\t\tPossible inputs:\n\t\tTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar"
+                        + "\tfood - food (ex: .calculate f beef 2)\n"
+                            + "\t\tPossible inputs:\n\t\tMeats: Beef, Pork, Lamb\n"
+                            + "\t\tPoultry: Chicken, Turkey, Duck, Goose, Quail\n"
+                            + "\t\tSeafood: Fish, Shellfish\n"
+                            + "\t\tDairy: Milk, Cheese, Butter, Ice cream\n"
+                            + "\t\tWater: Tap, Bottled, Fancy bottled\n"
+                            + "\ttravel - travel (ex: .calculate t train 100)\n"
+                            + "\t\tPossible inputs:\n\t\tTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar"
                     + ".help - show help commands\n"
                     + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
                     + "```"
@@ -128,30 +142,39 @@ bot.on("message", msg=>{
 
 function food(productType, quantity, id) {
     console.log("product type is " + productType);
-
-    if (!arr.includes(productType)) {
-        bot.channels.cache.get(id).send(productType.charAt(0).toUpperCase() + productType.substring(1) + " does not exist in our databse.");
-    }
-
     let total = 0;
     var arr = [
-        ["Beef", 1,],
-        ["Pork", 2],
-        ["Lamb", 3],
-        ["Chicken", 4], ["Turkey", 5], ["Duck", 6], ["Goose", 7], ["Quail", 8],
-        ["Fish", 9], ["Shellfish", 10],
-        ["Milk", 11], ["Cheese", 12], ["Butter", 13], ["Ice Cream", 14],
-        ["Tap", 15], ["Bottled", 16], ["Fancy bottled", 17],
-        ["Apple", 18]
+        ["beef", 1,],
+        ["pork", 2],
+        ["lamb", 3],
+        ["chicken", 4], ["turkey", 5], ["duck", 6], ["goose", 7], ["quail", 8],
+        ["fish", 9], ["shellfish", 10],
+        ["milk", 11], ["cheese", 12], ["butter", 13], ["ice cream", 14],
+        ["tap", 15], ["bottled", 16], ["fancy bottled", 17],
+        ["apple", 18]
     ];
 
+    productType = productType.toLowerCase();
+    console.log(productType);
+    var product = false;
+    for (var i=0; i< arr.length; i++) {
+        if (arr[i].includes(productType)) {
+            product = true;
+            break;
+        }
+    }
+    if (product == false) {
+        bot.channels.cache.get(id).send(productType.charAt(0).toUpperCase() + productType.substring(1) + " does not exist in our database.");
+        return;
+    }
+
     for (var i = 0; i < arr.length; i++) {
-        if (productType.toUpperCase() == arr[i][0].toUpperCase()) {
+        if (productType.toLowerCase() == arr[i][0].toLowerCase()) {
             total += ((quantity / 1000) * arr[i][1]);
         }
     }
     console.log(total);
-    return (total);
+    bot.channels.cache.get(id).send("Your consumption produces " + total + " kg of CO2!");
 }
 
 function recycleMaterial(material, id) {
