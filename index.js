@@ -55,14 +55,6 @@ bot.on("message", msg => {
                         var dist = args[3];
                         var APIInputs = ["Taxi", "ClassicBus", "EcoBus", "Coach", "NationalTrain", "LightRail", "Subway", "FerryOnFoot", "FerryInCar"];
 
-                        //Dictionary with alternate spellings to the API call
-                        var dict = {
-                          "taxi": "Taxi",
-                          "bus": "ClassicBus",
-                          "Eco Bus": "EcoBus",
-                          "Train" : "NationalTrain"
-                        };
-
                         // Checks if method can be passed to API call
                         if (!APIInputs.includes(method)){
                           msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
