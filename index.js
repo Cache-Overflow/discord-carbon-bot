@@ -101,7 +101,7 @@ bot.on("message", msg => {
                                 return response.json();
                             })
                             .then(myJson => {
-                                return msg.channel.send(`Air Quality Health Index: ${myJson.airQualityHealthIndex}`);
+                                return msg.channel.send(`Air Quality Health Index: ${myJson.airQualityHealthIndex} :leaves:`);
                             })
                             .catch(err => {
                                 console.log(err);
@@ -127,7 +127,7 @@ bot.on("message", msg => {
                                 return response.json();
                             })
                             .then(myJson =>{
-                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :fog:`);
                             })
                             .catch(err =>{
                                 console.log(err);
@@ -184,7 +184,7 @@ bot.on("message", msg => {
                             return response.json();
                             })
                         .then(function (myJson) {
-                            msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                            msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :bullettrain_side:`);
                             })
                         .catch(err => {
                             console.log(err);
@@ -198,6 +198,7 @@ bot.on("message", msg => {
                         var inputs = ["smalldieselcar", "mediumdieselcar", "largedieselcar", "mediumhybridcar", "largehybridcar", "mediumlpgcar", "largelpgcar", "mediumcngcar",
                                     "largecngcar", "smallpetrolvan", "largepetrolvan", "smalldielselvan", "mediumdielselvan", "largedielselvan", "lpgvan, cngvan", "smallpetrolcar",
                                      "mediumpetrolcar", "largepetrolcar", "smallmotorbike", "mediummotorbike", "largemotorbike"];
+
                         if (!inputs.includes(type.toLowerCase())) {
                             msg.channel.send("Sorry, I cannot calculate your footprint from this type of car!");
                             break;
@@ -213,7 +214,7 @@ bot.on("message", msg => {
                                 return response.json();
                             })
                             .then(myJson => {
-                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :truck:`);
                             })
                             .catch(err => {
                                 console.log(err);
@@ -234,6 +235,7 @@ bot.on("message", msg => {
                         }
 						console.log(method)
                         if (method == "airplane" || method == "plane"){
+                            //plane
                             // Inputs: DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight
                             method = "LongEconomyClassFlight";
                             // msg.channel.send("Specify which kind of flight! (DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight)")
@@ -250,7 +252,7 @@ bot.on("message", msg => {
                                   return response.json();
                                 })
                             .then(function (myJson){
-                                  msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                                msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :airplane:`);
                                 })
                             .catch(err => {
                                 	console.log(err);
@@ -267,7 +269,7 @@ bot.on("message", msg => {
                                   return response.json();
                                 })
                             .then(function (myJson){
-                                  msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                                msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :airplane:`);
                                 })
                             .catch(err => {
                                 	console.log(err);
@@ -275,6 +277,34 @@ bot.on("message", msg => {
                             }
                         break;
                     case "ts":
+                    case "tree":
+                    case "trees":
+                        var weight = args[2];
+                        var unit = args[3];
+                        var inputs = ["kg","lb"];
+
+                        if (!inputs.includes(unit.toLowerCase())) {
+                            msg.channel.send("Sorry, I cannot calculate your footprint from this unit!");
+                            break;
+                        }
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/TreeEquivalent?weight=${weight}&unit=${unit}`, {
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                "x-rapidapi-key": "7b83208c3cmsh7f1c745c01060cep1b4260jsn8ccf6057f135"
+                            }
+                        })
+                        .then(response => {
+                            return response.json();
+                        })
+                        .then(myJson => {
+                            return msg.channel.send(`Number of Trees: ${myJson.numberOfTrees} :deciduous_tree:`);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        });
+                        break;
+                        case "ts":
                     case "tree":
                     case "trees":
                         var weight = args[2];
