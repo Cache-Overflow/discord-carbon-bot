@@ -15,7 +15,7 @@ bot.on("message", msg=>{
     if (msg.author == bot.user) { // Prevent bot from responding to its own messages
         return
     }
-
+// Hello
     // test cases
     if (msg.content === "Gabe") {
         msg.channel.send("Yeah hes dirtyy");
