@@ -14,39 +14,55 @@ bot.on("message", msg=>{
         msg.channel.send("Yeah hes dirtyy");
     }
     if (msg.content === "Lemme") {
-        msg.channel.send("He is the best!")
+        msg.channel.send("He is the best!");
     }
     if (msg.content === "Carbon") {
-        msg.channel.send("DESTROY")
+        msg.channel.send("DESTROY");
     }
     if (msg.content === "ayy") {
         msg.channel.send("lmao");
     }
 
-
-
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
         console.log(args);
-        
-        if (args[0].toUpperCase()=="CALCULATE"){
-            msg.channel.send("Your consumption produces "+lemme2(args[1],args[2])+"KG of CO2!");
+
+        // can maybe switch case this
+        if (args[0].toLowerCase() == "calculate") {
+            try {
+                msg.channel.send("Your consumption produces " + lemme2(args[1], args[2]) + " kg of CO2!");
+            }
+            catch (e) {
+                console.log(e);
+                msg.channel.send("Missing arguments after \"calculate\".");
+            }
         }
-        
+
         //var command = msg.content.substring(1)
         //msg.channel.send(command)
         //processCommand(command)
-        if (args[0].toUpperCase() == "HELP"){
+        else if (args[0].toLowerCase() == "help") {
             // this will list all possible commands ***ADD THEM WHEN U CAN***
             msg.channel.send("LIST OF COMMANDS:\n\n"
-                +"Calculate - (ex: .Calculate beef 2 )");
+                + ".calculate - calculate carbon emission (ex: .calculate beef 2)"
+                + ".help - show help commands"
+            );
+        }
+
+        else {
+            msg.channel.send("Unknown command.");
         }
     }
 
-    
+
     // if (msg.content.startsWith)
 })
+
 function lemme2(productType, quantity) {
+    if (productType == null || !arr.contains(productType) || quantity == 0) {
+        throw "BadProduct";
+    }
+
     let total = 0;
     var arr = [
         ["Beef", 1,],
