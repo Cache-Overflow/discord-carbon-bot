@@ -13,6 +13,7 @@ const helpEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-t
 	.addFields(
 		{ name: '**.calculate**', value: "calculates carbon emissions, do .help caluculate for more info\n*ex: .c p plane 10000*", inline: false },
         { name: '.coronavirus', value: "coronavirus information\n**Takes:**\nCountry\n*ex: .coronavirus Canada*", inline: false },
+        { name: '**.info**', value: "about me :shankspog:"},
 		{ name: '**.help**', value: 'show help commands', inline: false },
 		{ name: '**.recycle**', value: 'see if a material is recyclable\n**Takes:**\nType\n*ex: .recycle plastic*', inline: false },
 	)
@@ -42,7 +43,6 @@ const helpCalculateEmbed = new Discord.MessageEmbed()
     .setTimestamp()
     .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
 
-
 let recycle = false;
 
 bot.login(token);
@@ -62,6 +62,7 @@ bot.on("message", msg => {
     // test cases
     if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
     if (msg.content === "ayy") msg.channel.send("lmao");
+    if (msg.content === "shankspog") msg.channel.send("<:shankspog:700953540599742604>");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
@@ -179,6 +180,7 @@ bot.on("message", msg => {
                               return response.json();
                             })
                         .then(function (myJson) {
+															msg.channel.send(coronavirusEmbed);
                               msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
                             })
                         .catch(err => {
@@ -301,9 +303,11 @@ bot.on("message", msg => {
                         msg.channel.send("Missing statement.");
                 }
                 break;
+            case "covid":
+            case "covid-19":
             case "corona":
             case "coronavirus":
-	            var country = args[2];
+	            var country = args[1];
 		        fetch(`https://coronavirus-map.p.rapidapi.com/v1/summary/region?region=${country}`, {
 		         	"method": "GET",
 		          	"headers": {
@@ -315,7 +319,19 @@ bot.on("message", msg => {
 	                    return response.json();
 		            })
 					.then(myJson => {
-						console.log("hi");
+                        const coronavirusEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-topics/embeds.html
+                        	.setColor('#0xff0000')
+                        	.setTitle('Coronavirus ' + country.charAt(0).toUpperCase() + country.substring(1) + ' Info')
+                    		.setURL('https://www.worldometers.info/coronavirus/country/' + country)
+                    		.setDescription('Public Health information about COVID-19 in' + country.charAt(0).toUpperCase() + country.substring(1))
+                        	.setThumbnail('')
+                    		.addFields(
+                				{ name: "**Confirmed cases**", value: + myJson.data.summary.total_cases, inline: false },
+                    		)
+                    		.setTimestamp()
+                    		.setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
+
+						msg.channel.send(coronavirusEmbed)
 					})
 		            .catch(err => {
 		                console.log(err);
@@ -329,6 +345,9 @@ bot.on("message", msg => {
                     case 'calculate':
                         msg.channel.send(helpCalculateEmbed);
                         break;
+										// case "corona":
+										// case "coronavirus":
+										// 	msg.channel.send(coronavirusEmbed);
                     default:
                         msg.channel.send(helpEmbed);
                 }
