@@ -62,7 +62,6 @@ bot.on("message", msg=>{
             default:
                 msg.channel.send("Unknown command.");
         }
-        console.log("abc")
 
     }
 });
