@@ -67,12 +67,14 @@ bot.on("message", msg=>{
 });
 
 function lemme2(productType, quantity) {
-    // if (productType == undefined) {
-    //     throw "NoProduct";
-    // }
-    // if (!arr.includes(productType)) {
-    //     throw "BadProduct";
-    // }
+    console.log("product type is " + productType);
+
+    if (productType == undefined) {
+        throw "NoProduct";
+    }
+    if (!arr.includes(productType)) {
+        throw "BadProduct";
+    }
 
     let total = 0;
     var arr = [
