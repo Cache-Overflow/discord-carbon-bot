@@ -448,7 +448,7 @@ function recycleMaterial(material, id) {
     if (a == "plastic") {
 		const recycleEmbed = new Discord.MessageEmbed()
 		.setColor('#0xff0000')
-		.setDescription('Enter the type of plastic:')
+        .setDescription('Enter the type of plastic (ex.1): ')
 		.setThumbnail('')
 		.addFields({name: '**1**', value: 'PETE - Polyethylene Terephthalate ex: soda bottles'},
 					{name: '**2**',value: 'HDPE - High density Polyethylene ex: detergent bottles'},
@@ -468,19 +468,19 @@ function recycleMaterial(material, id) {
 function recyclePlastic(s) {
     switch (s) {
         case "1":
-            return "recyclable!";
+            return "recyclable! :recycle: ";
         case "2":
-            return "recyclable!";
+            return "recyclable! :recycle: ";
         case "3":
-            return "not recyclable!";
+            return "not recyclable! :no_entry_sign:";
         case "4":
-            return "recyclable!";
+            return "recyclable! :recycle: ";
         case "5":
-            return "recyclable!";
+            return "recyclable! :recycle: ";
         case "6":
-            return "not recyclable!";
+            return "not recyclable! :no_entry_sign:";
         default:
-            return "not recyclable";
+            return "not recyclable :no_entry_sign:";
     }
     recycle = false;
 }
