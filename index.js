@@ -73,7 +73,8 @@ bot.on("message", msg=>{
                           method = "ClassicBus";
                         }
                         if (method == "car"){
-                          method = "Taxi";
+                          msg.channel.send("Use the Car calculator instead!");
+                          break;
                         }
                         if (method == "train"){
                           method = "NationalTrain";
