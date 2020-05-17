@@ -29,6 +29,7 @@ bot.on("message", msg=>{
         return
     }
 
+    // test cases
     if (msg.content === "Gabe") {
         msg.channel.send("Yeah hes dirtyy");
     }
@@ -47,36 +48,40 @@ bot.on("message", msg=>{
         console.log(args);
 
         // can maybe switch case this
-        if (args[0].toLowerCase() == "calculate") {
-            try {
-                msg.channel.send("Your consumption produces " + lemme2(args[1], args[2]) + " kg of CO2!");
-            }
-            catch (e) {
-                console.log(e.message);
-                msg.channel.send("Missing arguments after \"calculate\".");
-            }
+        switch (args[0].toLowerCase()) {
+            case "calculate":
+                try {
+                    msg.channel.send("Your consumption produces " + lemme2(args[1], args[2]) + " kg of CO2!");
+                }
+                catch (e) {
+                    console.log(e.message);
+                    msg.channel.send("Missing arguments after \"calculate\".");
+                }
+                finally {
+                    break;
+                }
+            case "help":
+                // in alphabetical order
+                msg.channel.send("LIST OF COMMANDS:\n\n"
+                    + ".calculate - calculate carbon emissions (ex: .calculate beef 2)\n"
+                    + ".help - show help commands\n"
+                    + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
+                    );
+
+                break;
+            case "recycle":
+                msg.channel.send(args[1].charAt(0).toUpperCase() + args[1].substring(1) + " is " + david(args[1]));
+                break;
+            default:
+                msg.channel.send("Unknown command.");
         }
 
-        //var command = msg.content.substring(1)
-        //msg.channel.send(command)
-        //processCommand(command)
-        else if (args[0].toLowerCase() == "help"){
-            // this will list all possible commands ***ADD THEM WHEN U CAN***
-            msg.channel.send("LIST OF COMMANDS:\n\n"
-                + ".calculate - calculate carbon emissions (ex: .Calculate beef 2 )\n"
-                + ".recyclable - (ex: .Recyclable plastic)\n"
-                + ".help - show help commands\n");
-        }
-        else if (args[0].toLowerCase() == "recyclable") {
-            msg.channel.send(args[1].charAt(0).toUpperCase() + args[1].substring(1) + " is " + david(args[1]))
-        }
-        else {
-            msg.channel.send("Unknown command.");
-        }
     }
 });
 
 function lemme2(productType, quantity) {
+    console.log("product type is " + productType);
+
     if (productType == undefined) {
         throw "NoProduct";
     }
@@ -111,16 +116,4 @@ function david(material) {
 
     if (mats.includes(a)) return("recyclable!");
     else return("not recyclable!");
-
 }
-/*
-function processCommand(msg) {
-    console.log(msg);
-}
-*/
-
-bot.on('ready', () => {
-    console.log("Logged in as " + bot.user.tag);
-
-    bot.channels.cache.get("711322092339200051").send("I am online!");
-})
