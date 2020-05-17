@@ -12,24 +12,24 @@ bot.on('ready', () => {
 });
 // Does an API call to Carbon Footprint calculator.
 // ***
-fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=5000&type=Taxi", {
-  "method": "GET",
-  "headers": {
-"x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
-"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
-}
-})
-.then(function (response) {
-      return response.json();
-    })
-.then(function (myJson) {
-      // var theDATA = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
-      console.log("The API Data is : "myJson.carbonEquivalent);
-      // console.log(theDATA);
-    })
-.catch(err => {
-  console.log(err);
-});
+// fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=5000&type=Taxi", {
+//   "method": "GET",
+//   "headers": {
+// "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+// "x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+// }
+// })
+// .then(function (response) {
+//       return response.json();
+//     })
+// .then(function (myJson) {
+//       // var theDATA = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
+//       console.log("The API Data is : "myJson.carbonEquivalent);
+//       // console.log(theDATA);
+//     })
+// .catch(err => {
+//   console.log(err);
+// });
 
 // test function
 bot.on("message", msg=>{
@@ -122,34 +122,31 @@ function david(material) {
     var a = material.toLowerCase();
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
-
-    if(a == "plastic"){
-        msg.channel.send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .5")
+    if (a == "plastic") {
+        msg.channel.send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .5");
         if (msg.content.startsWith(".")) {
             let pargs = msg.content.substring(prefix.length).split(" ");
 
-            switch(pargs[0]){
+            switch (pargs[0]) {
                 case "1":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "2":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "3":
-                    return("not recyclable!");
+                    return "not recyclable!";
                 case "4":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "5":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "6":
-                    return("not recyclable!");
+                    return "not recyclable!";
+                default:
+                    return "not recyclable";
             }
+        }
     }
-    if(mats.includes(a)) return("recyclable!");
 
-
-    return("not recyclable!");
-
-
-    if (mats.includes(a)) return("recyclable!");
-    else return("not recyclable!");
+    if (mats.includes(a)) return "recyclable!";
+    else return "not recyclable!";
 
 }
