@@ -28,22 +28,28 @@ bot.on("message", msg=>{
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
         console.log(args);
-        
-        if (args[0].toUpperCase()=="CALCULATE"){
+
+        if (args[0].toLowerCase()=="calculate"){
             msg.channel.send("Your consumption produces "+lemme2(args[1],args[2])+"KG of CO2!");
         }
-        
+
         //var command = msg.content.substring(1)
         //msg.channel.send(command)
         //processCommand(command)
-        if (args[0].toUpperCase() == "HELP"){
+        if (args[0].toLowerCase() == "help"){
             // this will list all possible commands ***ADD THEM WHEN U CAN***
             msg.channel.send("LIST OF COMMANDS:\n\n"
-                +"Calculate - (ex: .Calculate beef 2 )");
+                +"Calculate - (ex: .Calculate beef 2 )"
+            +"Recyclable - (ex: .Recyclable plastic)");
         }
+
+        if(args[0].toLowerCase()=="recyclable"){
+            msg.channel.send(args[0]+" is "+ david(args[0]))
+        }
+
     }
 
-    
+
     // if (msg.content.startsWith)
 })
 function lemme2(productType, quantity) {
@@ -66,6 +72,16 @@ function lemme2(productType, quantity) {
     }
     console.log(total);
     return (total);
+}
+
+function david(material){
+    var a = material.toLowerCase();
+    var mats = ["plastic","paper","cardboard","glass","tin","aluminum","steel"];
+
+    if (mats.contains(a)) return("recyclable!");
+
+    else return("not recyclable!");
+
 }
 /*
 function processCommand(msg) {
