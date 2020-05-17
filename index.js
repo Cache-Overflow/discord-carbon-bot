@@ -3,6 +3,45 @@ const bot = new Discord.Client();
 const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
 const prefix= "."
 const fetch = require("node-fetch");
+const helpEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-topics/embeds.html
+	.setColor('#0xff0000')
+	.setTitle('CarbonBot Commands')
+	.setURL('https://devpost.com/software/carbonbot')
+	.setAuthor('Cache Overflow', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png', 'https://github.com/Cache-Overflow')
+	.setDescription('Carbon bot for your carbon questions')
+	.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
+	.addFields(
+		{ name: '**.calculate**', value: "calculates carbon emissions, do .help caluculate for more info\n*ex: .c p plane 10000*", inline: false },
+        { name: '.coronavirus', value: "coronavirus information\n**Takes:**\nCountry\n*ex: .coronavirus Canada*", inline: false },
+		{ name: '**.help**', value: 'show help commands', inline: false },
+		{ name: '**.recycle**', value: 'see if a material is recyclable\n**Takes:**\nType\n*ex: .recycle plastic*', inline: false },
+	)
+	.setTimestamp()
+	.setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
+
+const helpCalculateEmbed = new Discord.MessageEmbed()
+    .setColor('#0xff0000')
+    .setTitle('CarbonBot Calculate Commands')
+    .setURL('https://devpost.com/software/carbonbot')
+    .setAuthor('Cache Overflow', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png', 'https://github.com/Cache-Overflow')
+    .setDescription('Calculate subcommands')
+    .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
+    .addFields(
+        { name: '**air**', value: "**Takes:**\nOzone, NO2, Particulate matter\n*ex: .c air 10 10 10*\n", inline: false },
+        { name: '**fuel**', value: "***Possible inputs***: Petrol, Diesel, LPG\n**Takes:**\nType, Litres\n*ex: .c fuel petrol 10*\n", inline: false },
+        { name: '**food**', value: "***Possible inputs:***\n**Meats**: Beef, Pork, Lamb\n"
+                + "**Poultry**: Chicken, Turkey, Duck, Goose, Quail\n"
+                + "**Seafood**: Tuna\n"
+                + "**Dairy**: Milk, Cheese\n"
+                + "**Bean products**, Beans\n tofu\n"
+                + "**Vegetables/Fruit**: Vegetables, Fruit, Lentils\n"
+                + "**Takes:**\nType, Number of servings\n"
+                + "*ex: .c f beef 2*\n", inline: false },
+        { name: '**travel**', value: "***Possible inputs:***\nTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n**Takes:**\nType, Distance\n*ex: .c t train 100*\n", inline: false },
+    )
+    .setTimestamp()
+    .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
+
 
 let recycle = false;
 
@@ -23,7 +62,6 @@ bot.on("message", msg => {
     // test cases
     if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
     if (msg.content === "ayy") msg.channel.send("lmao");
-    if (msg.content.toLowerCase() === "amanda") msg.channel.send("^sucks");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
@@ -39,6 +77,56 @@ bot.on("message", msg => {
                     break;
                 }
                 switch (args[1].toLowerCase()) {
+                    case "a":
+                    case "air":
+                        var o3 = args[2];
+                        var no2 = args[3];
+                        var pm = args[4];
+
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/AirQualityHealthIndex?O3=${o3}&NO2=${no2}&PM=${pm}`, {
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                "x-rapidapi-key": "7b83208c3cmsh7f1c745c01060cep1b4260jsn8ccf6057f135"
+                            }
+
+                        })
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(myJson => {
+                                return msg.channel.send(`Air Quality Health Index: ${myJson.airQualityHealthIndex}`);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
+                        break;
+                    // fuel to co2
+                    case "fuel":
+                        var type = args[2];// possible inputs Petrol, Diesel, LPG.
+                        var litres = args[3];
+                        var inputs =["petrol", "diesel", "LPG"];
+                        if (!inputs.includes(method)){
+                            msg.channel.send("Sorry, I cannot calculate your footprint from this type of fuel!");
+                            break;
+                        }
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/FuelToCO2e?type=${type}&litres=${litres}`,{
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                "x-rapidapi-key": "7b83208c3cmsh7f1c745c01060cep1b4260jsn8ccf6057f135"
+                            }
+                        })
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(myJson =>{
+                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                            })
+                            .catch(err =>{
+                                console.log(err);
+                            });
+                        break;
                     case "f":
                     case "food":
                         if(args[2] == undefined || args[3] == undefined){
@@ -48,51 +136,36 @@ bot.on("message", msg => {
                         food(args[2], args[3], msg.channel.id);
                         break;
                     // Public Transit to CO2
-                    case "t":
-                    case "ct":
+                    case "pt":
                     case "travel":
                     case "carbontravel":
                         var method = args[2]; //Possible inputs: Taxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar
                         var dist = args[3];
-<<<<<<< HEAD
                         var APIInputs = ["taxi", "classicBus", "ecobus", "coach", "nationaltrain", "lightrail", "subway", "ferryonfoot", "ferryincar"];
-                        var AirplaneInput = [];
-                        var isplane = false;
-=======
-                        var APIInputs = ["Taxi", "ClassicBus", "EcoBus", "Coach", "NationalTrain", "LightRail", "Subway", "FerryOnFoot", "FerryInCar"];
 
->>>>>>> cead3e4ffc7b7c16d76d4b749e7ef7f29bbaed55
+                        // Turning Common spellings into passable arguments for the API
+                        if (method == "bus"){
+                          method = "classicBus";
+                        }
+                        if (method == "car"){
+                          msg.channel.send("Please use the Car Calculator instead!");
+                          break;
+                        }
+
+                        if (method == "plane"){
+                          msg.channel.send("Please use the Plane Calculator instead!");
+                          break;
+                        }
+                        if (method == "train"){
+                          method = "nationaltrain";
+                        }
+
                         // Checks if method can be passed to API call
                         if (!APIInputs.includes(method)){
                           msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
                           break;
                         }
-                        if(AirplaneInput.includes(method)) isplane = true;
-                        // Turning Common spellings into passable arguments for the API
-                        if (method == "bus"){
-                          method = "ClassicBus";
-                        }
-                        if (method == "car"){
-<<<<<<< HEAD
-                          msg.channel.send("Please use the Car Calculator instead!");
-=======
-                          msg.channel.send("Use the Car calculator instead!");
->>>>>>> cead3e4ffc7b7c16d76d4b749e7ef7f29bbaed55
-                          break;
-                        }
-                        if (method == "train"){
-                          method = "NationalTrain";
-                        }
 
-                        if (method == "airplane" || method == "plane"){
-                          // Inputs: DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight
-                          method = "LongEconomyClassFlight";
-                          // msg.channel.send("Specify which kind of flight! (DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight)")
-                          // break;
-
-
-
-                        }
 
                         // API Code - Public Transit - Zhang
                         fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=${dist}&type=${method}`, {
@@ -112,16 +185,102 @@ bot.on("message", msg => {
                           console.log(err);
                         });
                         break;
-                    //fuel to co2
-                    case "fuel":
-                        var type = args[2];// possible inputs Petrol, Diesel, LPG.
-                        var litres = args[3];
-                        var inputs =["petrol", "diesel", "LPG"];
-                        if (!inputs.includes(method)){
-                          msg.channel.send("Sorry, I cannot calculate your footprint from this type of fuel!");
-                          break;
+
+                    //vehicle to co2
+                    case "car":
+                        var type = args[2];
+                        var distance = args[3];
+                        var inputs = ["smalldieselcar", "mediumdieselcar", "largedieselcar", "mediumhybridcar", "largehybridcar", "mediumlpgcar", "largelpgcar", "mediumcngcar",
+                                    "largecngcar", "smallpetrolvan", "largepetrolvan", "smalldielselvan", "mediumdielselvan", "largedielselvan", "lpgvan, cngvan", "smallpetrolcar",
+                                     "mediumpetrolcar", "largepetrolcar", "smallmotorbike", "mediummotorbike", "largemotorbike"];
+                        if (!inputs.includes(type.toLowerCase())) {
+                            msg.channel.send("Sorry, I cannot calculate your footprint from this type of car!");
+                            break;
                         }
-                        fetch(`https://carbonfootprint1.p.rapidapi.com/FuelToCO2e?type=${type}&litres=${litres}`,{
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromCarTravel?distance=${distance}&vehicle=${type}`, {
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                "x-rapidapi-key": "7b83208c3cmsh7f1c745c01060cep1b4260jsn8ccf6057f135"
+                            }
+                        })
+                            .then(response => {
+                                return response.json();
+                            })
+                            .then(myJson => {
+                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            });
+                        break;
+                    //airplanes case
+                    case "p":
+                    case "airplane":
+                    case "plane":
+                        var AirplaneInput = ["plane","airplane","domesticflight", "shorteconomyclassflight", "shortbusinessclassflight", "longeconomyclassflight", "longpremiumclassflight", "longbusinessclassflight", "longfirstclassflight"];
+                        var method = args[2];
+                        var dist = args[3];
+
+                        // Checks if method can be passed to API call
+                        if (!AirplaneInput.includes(method)){
+                            msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
+                            break;
+                        }
+						console.log(method)
+                        if (method == "airplane" || method == "plane"){
+                            // Inputs: DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight
+                            method = "LongEconomyClassFlight";
+                            // msg.channel.send("Specify which kind of flight! (DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight)")
+                            // break;
+
+                            fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromFlight?distance=${dist}&type=${method}`, {
+                                	"method": "GET",
+                                	"headers": {
+                                		"x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                		"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+                                	}
+                                })
+                            .then(function (response) {
+                                  return response.json();
+                                })
+                            .then(function (myJson){
+                                  msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                                })
+                            .catch(err => {
+                                	console.log(err);
+                                });
+                        } else {
+                            fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromFlight?distance=${dist}&type=${method}`, {
+                                	"method": "GET",
+                                	"headers": {
+                                		"x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                		"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+                                	}
+                                })
+                            .then(function (response) {
+                                  return response.json();
+                                })
+                            .then(function (myJson){
+                                  msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                                })
+                            .catch(err => {
+                                	console.log(err);
+                                });
+                            }
+                        break;
+                    case "ts":
+                    case "tree":
+                    case "trees":
+                        var weight = args[2];
+                        var unit = args[3];
+                        var inputs = ["kg","lb"];
+
+                        if (!inputs.includes(unit.toLowerCase())) {
+                            msg.channel.send("Sorry, I cannot calculate your footprint from this unit!");
+                            break;
+                        }
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/TreeEquivalent?weight=${weight}&unit=${unit}`, {
                             "method": "GET",
                             "headers": {
                                 "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
@@ -131,10 +290,10 @@ bot.on("message", msg => {
                         .then(response => {
                             return response.json();
                         })
-                        .then(myJson =>{
-                            return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                        .then(myJson => {
+                            return msg.channel.send(`Number of Trees: ${myJson.numberOfTrees}`);
                         })
-                        .catch(err =>{
+                        .catch(err => {
                             console.log(err);
                         });
                         break;
@@ -142,25 +301,37 @@ bot.on("message", msg => {
                         msg.channel.send("Missing statement.");
                 }
                 break;
+            case "corona":
+            case "coronavirus":
+	            var country = args[2];
+		        fetch(`https://coronavirus-map.p.rapidapi.com/v1/summary/region?region=${country}`, {
+		         	"method": "GET",
+		          	"headers": {
+		          	    "x-rapidapi-host": "coronavirus-map.p.rapidapi.com",
+		          		"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+		          	}
+		        })
+		            .then(response => {
+	                    return response.json();
+		            })
+					.then(myJson => {
+						console.log("hi");
+					})
+		            .catch(err => {
+		                console.log(err);
+		            });
+				break;
             case "h":
             case "help":
-                // in alphabetical order
-                msg.channel.send("```md\nLIST OF COMMANDS:\n\n"
-                    + ".calculate - calculate carbon emissions\n"
-                        + "\tfood - food (ex: .calculate f beef 2)\n"
-                            + "\t\tPossible inputs:\n\t\tMeats: Beef, Pork, Lamb\n"
-                            + "\t\tPoultry: Chicken, Turkey, Duck, Goose, Quail\n"
-                            + "\t\tSeafood: Fish, Shellfish\n"
-                            + "\t\tDairy: Milk, Cheese, Butter, Ice cream\n"
-                            + "\t\tWater: Tap, Bottled, Fancy bottled\n"
-                        + "\ttravel - (ex: .calculate t train 100)\n"
-                            + "\t\tPossible inputs:\n\t\tTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n"
-                        + "\tfuel - (ex: .calculate fuel petrol 10)\n"
-                            + "\t\tPossible inputs: Petrol, Diesel, LPG\n"
-                    + ".help - show help commands\n"
-                    + ".recycle - see if a material is recyclable (ex: .recycle plastic)\n"
-                    + "```"
-                );
+                switch (args[1]) {
+                    case 'c':
+                    case 'cal':
+                    case 'calculate':
+                        msg.channel.send(helpCalculateEmbed);
+                        break;
+                    default:
+                        msg.channel.send(helpEmbed);
+                }
                 break;
             case "r":
             case "recycle":
@@ -180,26 +351,22 @@ bot.on("message", msg => {
                     msg.channel.send("That plastic is " + recyclePlastic(args[0].toLowerCase()));
                 }
                 break;
-
             default:
                 msg.channel.send("Unknown command.");
+        }
     }
-
-}
 });
 
 function food(productType, quantity, id) {
     let total = 0;
     var arr = [
-        ["beef", 1,],
-        ["pork", 2],
-        ["lamb", 3],
-        ["chicken", 4], ["turkey", 5], ["duck", 6], ["goose", 7], ["quail", 8],
-        ["fish", 9], ["shellfish", 10],
-        ["milk", 11], ["cheese", 12], ["butter", 13], ["ice cream", 14],
-        ["tap", 15], ["bottled", 16], ["fancy bottled", 17],
-        ["apple", 18]
-    ];
+        ["beef", 27], ["pork", 12.1], ["lamb", 39.2],
+        ["chicken", 6.9], ["turkey", 10.9],
+        ["eggs", 4.8], ["potatoes", 2.9], ["rice", 2.7],
+        ["tuna", 6.1],
+        ["milk", 1.9], ["cheese", 13.5], ["nuts", 2.3], ["beans", 2], ["tofu", 2],
+        ["vegetables", 2], ["fruit", 1.1], ["lentils", .9]
+        ];
 
     var product = false;
     for (var i=0; i< arr.length; i++) {
