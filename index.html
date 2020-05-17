@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Display IP Address</title>
+</head>
+
+<body>
+  <h1>Carbon Equivalent for a Taxi</h1>
+  <h2 id=carbonEquivalent></h2>
+  <script>
+  fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=3000&type=Taxi", {
+    "method": "GET",
+    "headers": {
+  "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+  "x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+}
+})
+  .then(function (response) {
+        return response.json();
+      })
+  .then(function (myJson) {
+        document.querySelector("#carbonEquivalent").innerHTML = myJson.carbonEquivalent;
+        var theDATA = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
+        console.log(myJson.carbonEquivalent);
+        console.log(theDATA);
+      })
+  .catch(err => {
+    console.log(err);
+  });
+  </script>
+</body>
+
+</html>
