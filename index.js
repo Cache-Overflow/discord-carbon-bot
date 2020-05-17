@@ -22,12 +22,8 @@ bot.on("message", msg=>{
     }
 
     // test cases
-    if (msg.content.toLowerCase() === "carbon") {
-        msg.channel.send("DESTROY");
-    }
-    if (msg.content === "ayy") {
-        msg.channel.send("lmao");
-    }
+    if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
+    if (msg.content === "ayy") msg.channel.send("lmao");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
@@ -141,7 +137,6 @@ bot.on("message", msg=>{
 });
 
 function food(productType, quantity, id) {
-    console.log("product type is " + productType);
     let total = 0;
     var arr = [
         ["beef", 1,],
@@ -154,11 +149,9 @@ function food(productType, quantity, id) {
         ["apple", 18]
     ];
 
-    productType = productType.toLowerCase();
-    console.log(productType);
     var product = false;
     for (var i=0; i< arr.length; i++) {
-        if (arr[i].includes(productType)) {
+        if (arr[i].includes(productType.toLowerCase())) {
             product = true;
             break;
         }
@@ -169,11 +162,10 @@ function food(productType, quantity, id) {
     }
 
     for (var i = 0; i < arr.length; i++) {
-        if (productType.toLowerCase() == arr[i][0].toLowerCase()) {
+        if (productType.toLowerCase() == arr[i][0]) {
             total += ((quantity / 1000) * arr[i][1]);
         }
     }
-    console.log(total);
     bot.channels.cache.get(id).send("Your consumption produces " + total + " kg of CO2!");
 }
 
