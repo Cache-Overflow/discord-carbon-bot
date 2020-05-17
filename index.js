@@ -54,9 +54,14 @@ bot.on("message", msg => {
                     case "carbontravel":
                         var method = args[2]; //Possible inputs: Taxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar
                         var dist = args[3];
+<<<<<<< HEAD
                         var APIInputs = ["taxi", "classicBus", "ecobus", "coach", "nationaltrain", "lightrail", "subway", "ferryonfoot", "ferryincar"];
                         var AirplaneInput = [];
                         var isplane = false;
+=======
+                        var APIInputs = ["Taxi", "ClassicBus", "EcoBus", "Coach", "NationalTrain", "LightRail", "Subway", "FerryOnFoot", "FerryInCar"];
+
+>>>>>>> cead3e4ffc7b7c16d76d4b749e7ef7f29bbaed55
                         // Checks if method can be passed to API call
                         if (!APIInputs.includes(method)){
                           msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
@@ -68,7 +73,11 @@ bot.on("message", msg => {
                           method = "ClassicBus";
                         }
                         if (method == "car"){
+<<<<<<< HEAD
                           msg.channel.send("Please use the Car Calculator instead!");
+=======
+                          msg.channel.send("Use the Car calculator instead!");
+>>>>>>> cead3e4ffc7b7c16d76d4b749e7ef7f29bbaed55
                           break;
                         }
                         if (method == "train"){
