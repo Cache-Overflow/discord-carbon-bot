@@ -396,7 +396,7 @@ bot.on("message", msg => {
                         { name: "**Eli Samuel**", value: 'I am a first year computer science student at Concordia University. This is my fourth hackathon.', inline: false },
                         { name: "**David Lemme**", value: 'I am a first year software engineering student at Concordia University. This is my second hackathon.', inline: false },
                         { name: "**David Roper**", value: 'I am a first year software engineering student at Concordia University. This is my second hackathon.', inline: false },
-                        { name: "**Andrew Zhang**", value: 'I am a second year mechanical engineering student at the University of Toronto. This is my first software-focused hackathon.', inline: false },
+                        { name: "**Andrew Zhang**", value: 'I am a second year mechanical engineering student at the University of Toronto. This is my second hackathon.', inline: false },
                     )
                     .setTimestamp()
                     .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
