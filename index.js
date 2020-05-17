@@ -44,26 +44,25 @@ bot.on("message", msg=>{
         else if (args[0].toLowerCase() == "help"){
             // this will list all possible commands ***ADD THEM WHEN U CAN***
             msg.channel.send("LIST OF COMMANDS:\n\n"
-                + ".calculate - (ex: .Calculate beef 2 )"
-                + ".recyclable - (ex: .Recyclable plastic)"
-                + ".help - show help commands");
+                + ".calculate - calculate carbon emissions (ex: .Calculate beef 2 )\n"
+                + ".recyclable -    (ex: .Recyclable plastic)\n"
+                + ".help - show help commands\n");
         }
-
         else if (args[0].toLowerCase() == "recyclable") {
-            msg.channel.send(args[0] + " is " + david(args[0]))
+            msg.channel.send(args[1] + " is " + david(args[1]))
         }
-
         else {
             msg.channel.send("Unknown command.");
         }
-
-
-    // if (msg.content.startsWith)
-})
+    }
+});
 
 function lemme2(productType, quantity) {
-    if (productType == null || !arr.contains(productType) || quantity == 0) {
-        throw "BadProduct";
+    if (productType == undefined) {
+        throw "NoProduct";
+    }
+    if (!arr.includes(productType)) {
+        throw "BadProduct"
     }
 
     let total = 0;
@@ -89,10 +88,9 @@ function lemme2(productType, quantity) {
 
 function david(material){
     var a = material.toLowerCase();
-    var mats = ["plastic","paper","cardboard","glass","tin","aluminum","steel"];
+    let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
-    if (mats.contains(a)) return("recyclable!");
-
+    if (mats.includes(a)) return("recyclable!");
     else return("not recyclable!");
 
 }
