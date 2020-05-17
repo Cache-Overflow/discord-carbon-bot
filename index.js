@@ -112,7 +112,7 @@ bot.on("message", msg => {
                         var type = args[2];// possible inputs Petrol, Diesel, LPG.
                         var litres = args[3];
                         var inputs =["petrol", "diesel", "LPG"];
-                        if (!inputs.includes(method)){
+                        if (!inputs.includes(type)){
                             msg.channel.send("Sorry, I cannot calculate your footprint from this type of fuel!");
                             break;
                         }
