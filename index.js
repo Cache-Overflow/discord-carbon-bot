@@ -3,6 +3,7 @@ const bot = new Discord.Client();
 const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
 const prefix= "."
 const fetch = require("node-fetch");
+
 let recycle = false;
 
 bot.login(token);
@@ -16,14 +17,13 @@ bot.on('ready', () => {
 });
 
 // test function
-bot.on("message", msg=>{
-    if (msg.author == bot.user) { // Prevent bot from responding to its own messages
-        return;
-    }
+bot.on("message", msg => {
+    if (msg.author == bot.user) return; // Prevent bot from responding to its own messages
 
     // test cases
     if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
     if (msg.content === "ayy") msg.channel.send("lmao");
+    if (msg.content.toLowerCase() === "amanda") msg.channel.send("^sucks");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
@@ -98,6 +98,32 @@ bot.on("message", msg=>{
                         });
 
                         break;
+                    //fuel to co2
+                    case "fuel":
+                        var type = args[2];// possible inputs Petrol, Diesel, LPG.
+                        var litres = args[3];
+                        var inputs =["petrol", "disel", "LPG"];
+                        if (!inputs.includes(method)){
+                          msg.channel.send("Sorry, I cannot calculate your footprint from this type of fuel!");
+                          break;
+                        }
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/FuelToCO2e?type=${type}&litres=${litres}`,{
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                "x-rapidapi-key": "7b83208c3cmsh7f1c745c01060cep1b4260jsn8ccf6057f135"
+                            }
+                        })
+                        .then(response => {
+                            return response.json();
+                        })
+                        .then(myJson =>{
+                            return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                        })
+                        .catch(err =>{
+                            console.log(err);
+                        });
+                        break;
                     default:
                         msg.channel.send("Missing statement.");
                 }
@@ -105,7 +131,7 @@ bot.on("message", msg=>{
             case "h":
             case "help":
                 // in alphabetical order
-                msg.channel.send("```LIST OF COMMANDS:\n\n"
+                msg.channel.send("```css\nLIST OF COMMANDS:\n\n"
                     + ".calculate - calculate carbon emissions\n"
                         + "\tfood - food (ex: .calculate f beef 2)\n"
                             + "\t\tPossible inputs:\n\t\tMeats: Beef, Pork, Lamb\n"
@@ -113,8 +139,10 @@ bot.on("message", msg=>{
                             + "\t\tSeafood: Fish, Shellfish\n"
                             + "\t\tDairy: Milk, Cheese, Butter, Ice cream\n"
                             + "\t\tWater: Tap, Bottled, Fancy bottled\n"
-                            + "\ttravel - travel (ex: .calculate t train 100)\n"
+                        + "\ttravel - (ex: .calculate t train 100)\n"
                             + "\t\tPossible inputs:\n\t\tTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar"
+                        + "\tfuel - (ex: .calculate fuel petrol 10)"
+                            + "\t\tPossible inputs: Petrol, Diesel, LPG\n"
                     + ".help - show help commands\n"
                     + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
                     + "```"
