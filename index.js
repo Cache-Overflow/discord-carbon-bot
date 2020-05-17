@@ -46,7 +46,7 @@ bot.on("message", msg=>{
                             msg.channel.send("Missing statement.");
                             break;
                         }
-                        msg.channel.send("Your consumption produces " + lemme2(args[2], args[3]) + " kg of CO2!");
+                        msg.channel.send("Your consumption produces " + food(args[2], args[3]) + " kg of CO2!");
                         break;
                     case "t":
                     case "ct":
@@ -85,8 +85,8 @@ bot.on("message", msg=>{
                 // in alphabetical order
                 msg.channel.send("```LIST OF COMMANDS:\n\n"
                     + ".calculate - calculate carbon emissions\n"
-                    + "\t.f - food (ex: .calculate f beef 2)\n"
-                    + "\t.t - travel (ex: .calculate t train 100)\n"
+                    + "\tfood - food (ex: .calculate f beef 2)\n"
+                    + "\ttravel - travel (ex: .calculate t train 100)\n"
                     + ".help - show help commands\n"
                     + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
                     + "```"
@@ -98,7 +98,7 @@ bot.on("message", msg=>{
                     msg.channel.send("Missing statement.");
                     break;
                 }
-                david(args[1], msg.channel.id);
+                recycleMaterial(args[1], msg.channel.id);
                 break;
             case "1":
             case "2":
@@ -118,15 +118,15 @@ bot.on("message", msg=>{
 }
 });
 
-function lemme2(productType, quantity) {
+function food(productType, quantity) {
     console.log("product type is " + productType);
 
-    // if (productType == undefined) {
-    //     throw "NoProduct";
-    // }
-    // if (!arr.includes(productType)) {
-    //     throw "BadProduct";
-    // }
+    if (productType == undefined) {
+        return;
+    }
+    if (!arr.includes(productType)) {
+        throw "BadProduct";
+    }
 
     let total = 0;
     var arr = [
@@ -149,7 +149,7 @@ function lemme2(productType, quantity) {
     return (total);
 }
 
-function david(material, id) {
+function recycleMaterial(material, id) {
     var a = material.toLowerCase();
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
