@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
 const prefix= "."
+let recycle = false;
+
 bot.login(token);
 
 bot.on('ready', () => {
@@ -9,8 +11,8 @@ bot.on('ready', () => {
 
     bot.channels.cache.get("711322092339200051").send("I am online!");
 });
-// Does an API call to Carbon Footprint calculator.
-// ***
+
+//Does an API call to Carbon Footprint calculator.
 // fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=5000&type=Taxi", {
 //   "method": "GET",
 //   "headers": {
@@ -22,9 +24,9 @@ bot.on('ready', () => {
 //       return response.json();
 //     })
 // .then(function (myJson) {
-//       // var theDATA = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
-//       console.log("The API Data is : "myJson.carbonEquivalent);
-//       // console.log(theDATA);
+//
+//       console.log("The API Data is : " + myJson.carbonEquivalent);
+//
 //     })
 // .catch(err => {
 //   console.log(err);
@@ -35,14 +37,8 @@ bot.on("message", msg=>{
     if (msg.author == bot.user) { // Prevent bot from responding to its own messages
         return
     }
-// Hello
+
     // test cases
-    if (msg.content === "Gabe") {
-        msg.channel.send("Yeah hes dirtyy");
-    }
-    if (msg.content === "Lemme") {
-        msg.channel.send("He is the best!");
-    }
     if (msg.content === "Carbon") {
         msg.channel.send("DESTROY");
     }
@@ -56,6 +52,7 @@ bot.on("message", msg=>{
 
         // can maybe switch case this
         switch (args[0].toLowerCase()) {
+            case "cal":
             case "calculate":
                 try {
                     msg.channel.send("Your consumption produces " + lemme2(args[1], args[2]) + " kg of CO2!");
@@ -67,23 +64,35 @@ bot.on("message", msg=>{
                 finally {
                     break;
                 }
+            case "h":
             case "help":
-                // in alphabetical order
+            // in alphabetical order
                 msg.channel.send("LIST OF COMMANDS:\n\n"
-                    + ".calculate - calculate carbon emissions (ex: .calculate beef 2)\n"
-                    + ".help - show help commands\n"
-                    + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
-                    );
+                + ".calculate - calculate carbon emissions (ex: .calculate beef 2)\n"
+                + ".help - show help commands\n"
+                + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
+            );
 
                 break;
+            case "r":
             case "recycle":
-                msg.channel.send(args[1].charAt(0).toUpperCase() + args[1].substring(1) + " is " + david(args[1]));
+                david(args[1], msg.channel.id);
+                break;
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+                if (recycle == true) {
+                    msg.channel.send("That plastic is " + recyclePlastic(args[0].toLowerCase()));
+                }
                 break;
             default:
                 msg.channel.send("Unknown command.");
-        }
-
     }
+
+}
 });
 
 function lemme2(productType, quantity) {
@@ -117,35 +126,35 @@ function lemme2(productType, quantity) {
     return (total);
 }
 
-function david(material) {
+function david(material, id) {
     var a = material.toLowerCase();
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
     if (a == "plastic") {
-        msg.channel.send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .5");
-        if (msg.content.startsWith(".")) {
-            let pargs = msg.content.substring(prefix.length).split(" ");
-
-            switch (pargs[0]) {
-                case "1":
-                    return "recyclable!";
-                case "2":
-                    return "recyclable!";
-                case "3":
-                    return "not recyclable!";
-                case "4":
-                    return "recyclable!";
-                case "5":
-                    return "recyclable!";
-                case "6":
-                    return "not recyclable!";
-                default:
-                    return "not recyclable";
-            }
-        }
+        bot.channels.cache.get(id).send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .1");
+        recycle = true;
+        return;
     }
 
-    if (mats.includes(a)) return "recyclable!";
-    else return "not recyclable!";
+    bot.channels.cache.get(id).send(material.charAt(0).toUpperCase() + material.substring(1) + " is " + (mats.includes(a) ? "recyclable!" : "not recyclable!"));
+}
 
+function recyclePlastic(s) {
+    switch (s) {
+        case "1":
+            return "recyclable!";
+        case "2":
+            return "recyclable!";
+        case "3":
+            return "not recyclable!";
+        case "4":
+            return "recyclable!";
+        case "5":
+            return "recyclable!";
+        case "6":
+            return "not recyclable!";
+        default:
+            return "not recyclable";
+    }
+    recycle = false;
 }
