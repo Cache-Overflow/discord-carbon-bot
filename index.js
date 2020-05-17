@@ -2,12 +2,8 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
 const prefix= "."
-<<<<<<< HEAD
 let recycle = false;
 
-=======
-const fetch = require("node-fetch");
->>>>>>> 56fe304b984940521974b9abf4ce75fb14e75946
 bot.login(token);
 
 bot.on('ready', () => {
@@ -16,30 +12,10 @@ bot.on('ready', () => {
     bot.channels.cache.get("711322092339200051").send("I am online!");
 });
 
-//Does an API call to Carbon Footprint calculator.
-// fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=5000&type=Taxi", {
-//   "method": "GET",
-//   "headers": {
-// "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
-// "x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
-// }
-// })
-// .then(function (response) {
-//       return response.json();
-//     })
-// .then(function (myJson) {
-//
-//       console.log("The API Data is : " + myJson.carbonEquivalent);
-//
-//     })
-// .catch(err => {
-//   console.log(err);
-// });
-
 // test function
 bot.on("message", msg=>{
     if (msg.author == bot.user) { // Prevent bot from responding to its own messages
-        return
+        return;
     }
 
     // test cases
@@ -56,30 +32,72 @@ bot.on("message", msg=>{
 
         // can maybe switch case this
         switch (args[0].toLowerCase()) {
+            case "c":
             case "cal":
             case "calculate":
-                try {
-                    msg.channel.send("Your consumption produces " + lemme2(args[1], args[2]) + " kg of CO2!");
-                }
-                catch (e) {
-                    console.log(e.message);
-                    msg.channel.send("Missing arguments after \"calculate\".");
-                }
-                finally {
+                if (args[1] == undefined) {
+                    msg.channel.send("Missing statment.")
                     break;
                 }
+                switch (args[1].toLowerCase()) {
+                    case "f":
+                    case "food":
+                        if(args[1] == undefined || args[2] == undefined){
+                            msg.channel.send("Missing statement.");
+                            break;
+                        }
+                        msg.channel.send("Your consumption produces " + lemme2(args[2], args[3]) + " kg of CO2!");
+                        break;
+                    case "t":
+                    case "ct":
+                    case "travel":
+                    case "carbontravel":
+                        var method = args[2];
+                        var dist = args[3];
+
+                        // API Code
+                        fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=${dist}&type=${method}`, {
+                          "method": "GET",
+                          "headers": {
+                        "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                        "x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+                      }
+                      })
+                        .then(function (response) {
+                              return response.json();
+                            })
+                        .then(function (myJson) {
+                              document.querySelector("#carbonEquivalent").innerHTML = myJson.carbonEquivalent;
+                              console.log(`Carbon Equivalent: ${myJson.carbonEquivalent}`)
+
+                            })
+                        .catch(err => {
+                          console.log(err);
+                        });
+
+                        break;
+                    default:
+                        msg.channel.send("Missing statement.");
+                }
+                break;
             case "h":
             case "help":
-            // in alphabetical order
-                msg.channel.send("LIST OF COMMANDS:\n\n"
-                + ".calculate - calculate carbon emissions (ex: .calculate beef 2)\n"
-                + ".help - show help commands\n"
-                + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
-            );
-
+                // in alphabetical order
+                msg.channel.send("```LIST OF COMMANDS:\n\n"
+                    + ".calculate - calculate carbon emissions\n"
+                    + "\t.f - food (ex: .calculate f beef 2)\n"
+                    + "\t.t - travel (ex: .calculate t train 100)\n"
+                    + ".help - show help commands\n"
+                    + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
+                    + "```"
+                );
                 break;
             case "r":
             case "recycle":
+                if(args[1] == undefined){
+                    msg.channel.send("Missing statement.");
+                    break;
+                }
                 david(args[1], msg.channel.id);
                 break;
             case "1":
@@ -92,6 +110,7 @@ bot.on("message", msg=>{
                     msg.channel.send("That plastic is " + recyclePlastic(args[0].toLowerCase()));
                 }
                 break;
+
             default:
                 msg.channel.send("Unknown command.");
     }
@@ -102,12 +121,12 @@ bot.on("message", msg=>{
 function lemme2(productType, quantity) {
     console.log("product type is " + productType);
 
-    if (productType == undefined) {
-        throw "NoProduct";
-    }
-    if (!arr.includes(productType)) {
-        throw "BadProduct";
-    }
+    // if (productType == undefined) {
+    //     throw "NoProduct";
+    // }
+    // if (!arr.includes(productType)) {
+    //     throw "BadProduct";
+    // }
 
     let total = 0;
     var arr = [
@@ -135,7 +154,7 @@ function david(material, id) {
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
     if (a == "plastic") {
-        bot.channels.cache.get(id).send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .1");
+        bot.channels.cache.get(id).send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex: .1");
         recycle = true;
         return;
     }
