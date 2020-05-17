@@ -101,34 +101,30 @@ function david(material) {
     var a = material.toLowerCase();
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
-
     if(a == "plastic"){
-        msg.channel.send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .5")
+        msg.channel.send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .5");
         if (msg.content.startsWith(".")) {
             let pargs = msg.content.substring(prefix.length).split(" ");
 
-            switch(pargs[0]){
+            switch (pargs[0]) {
                 case "1":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "2":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "3":
-                    return("not recyclable!");
+                    return "not recyclable!";
                 case "4":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "5":
-                    return("recyclable!");
+                    return "recyclable!";
                 case "6":
-                    return("not recyclable!");
+                    return "not recyclable!";
+                default:
+                    return "not recyclable";
             }
     }
-    if(mats.includes(a)) return("recyclable!");
 
-
-    return("not recyclable!");
-
-
-    if (mats.includes(a)) return("recyclable!");
-    else return("not recyclable!");
+    if (mats.includes(a)) return "recyclable!";
+    else return "not recyclable!";
 
 }
