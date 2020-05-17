@@ -1,3 +1,8 @@
+/* TODO FOR TOMRROW:
+embeds for cases where user does not imput everything
+for example: .calculate food
+*/
+
 const Discord = require("discord.js");
 const bot = new Discord.Client();
 const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
@@ -34,11 +39,11 @@ const helpCalculateEmbed = new Discord.MessageEmbed()
                 + "**Poultry**: Chicken, Turkey, Duck, Goose, Quail\n"
                 + "**Seafood**: Tuna\n"
                 + "**Dairy**: Milk, Cheese\n"
-                + "**Bean products**, Beans\n tofu\n"
+                + "**Bean products**, Beans, Tofu\n"
                 + "**Vegetables/Fruit**: Vegetables, Fruit, Lentils\n"
                 + "**Takes:**\nType, Number of servings\n"
                 + "*ex: .c f beef 2*\n", inline: false },
-        { name: '**travel**', value: "***Possible inputs:***\nTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n**Takes:**\nType, Distance\n*ex: .c t train 100*\n", inline: false },
+        { name: '**travel**', value: "***Possible inputs:***\nTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n**Takes:**\nType, Distance\n*ex: .c t taxi 100*\n", inline: false },
     )
     .setTimestamp()
     .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
@@ -137,7 +142,7 @@ bot.on("message", msg => {
                         food(args[2], args[3], msg.channel.id);
                         break;
                     // Public Transit to CO2
-                    case "pt":
+                    case "t":
                     case "travel":
                     case "carbontravel":
                         var method = args[2]; //Possible inputs: Taxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar
@@ -163,28 +168,26 @@ bot.on("message", msg => {
 
                         // Checks if method can be passed to API call
                         if (!APIInputs.includes(method)){
-                          msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
-                          break;
+                            msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
+                            break;
                         }
-
 
                         // API Code - Public Transit - Zhang
                         fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=${dist}&type=${method}`, {
-                          "method": "GET",
-                          "headers": {
-                        "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
-                        "x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
-                      }
-                      })
+                            "method": "GET",
+                            "headers": {
+                                "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+                                "x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+                            }
+                        })
                         .then(function (response) {
-                              return response.json();
+                            return response.json();
                             })
                         .then(function (myJson) {
-															msg.channel.send(coronavirusEmbed);
-                              msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
+                            msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent}`);
                             })
                         .catch(err => {
-                          console.log(err);
+                            console.log(err);
                         });
                         break;
 
@@ -300,7 +303,7 @@ bot.on("message", msg => {
                         });
                         break;
                     default:
-                        msg.channel.send("Missing statement.");
+                        msg.channel.send("Missing statement.aaaa");
                 }
                 break;
             case "covid":
