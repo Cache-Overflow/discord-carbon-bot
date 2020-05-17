@@ -47,38 +47,45 @@ bot.on("message", msg => {
                         }
                         food(args[2], args[3], msg.channel.id);
                         break;
+                    // Public Transit to CO2
                     case "t":
                     case "ct":
                     case "travel":
                     case "carbontravel":
                         var method = args[2]; //Possible inputs: Taxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar
                         var dist = args[3];
-                        var APIInputs = ["Taxi", "ClassicBus", "EcoBus", "Coach", "NationalTrain", "LightRail", "Subway", "FerryOnFoot", "FerryInCar"];
-
-                        //Dictionary with alternate spellings to the API call
-                        var dict = {
-                          "taxi": "Taxi",
-                          "bus": "ClassicBus",
-                          "Eco Bus": "EcoBus",
-                          "Train" : "NationalTrain"
-                        };
-
+                        var APIInputs = ["taxi", "classicBus", "ecobus", "coach", "nationaltrain", "lightrail", "subway", "ferryonfoot", "ferryincar"];
+                        var AirplaneInput = [];
+                        var isplane = false;
                         // Checks if method can be passed to API call
                         if (!APIInputs.includes(method)){
                           msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
                           break;
                         }
+                        if(AirplaneInput.includes(method)) isplane = true;
                         // Turning Common spellings into passable arguments for the API
                         if (method == "bus"){
                           method = "ClassicBus";
                         }
                         if (method == "car"){
-                          method = "Taxi";
+                          msg.channel.send("Please use the Car Calculator instead!");
+                          break;
                         }
                         if (method == "train"){
                           method = "NationalTrain";
                         }
-                        // API Code
+
+                        if (method == "airplane" || method == "plane"){
+                          // Inputs: DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight
+                          method = "LongEconomyClassFlight";
+                          // msg.channel.send("Specify which kind of flight! (DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight)")
+                          // break;
+
+
+
+                        }
+
+                        // API Code - Public Transit - Zhang
                         fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=${dist}&type=${method}`, {
                           "method": "GET",
                           "headers": {
@@ -95,13 +102,12 @@ bot.on("message", msg => {
                         .catch(err => {
                           console.log(err);
                         });
-
                         break;
                     //fuel to co2
                     case "fuel":
                         var type = args[2];// possible inputs Petrol, Diesel, LPG.
                         var litres = args[3];
-                        var inputs =["petrol", "disel", "LPG"];
+                        var inputs =["petrol", "diesel", "LPG"];
                         if (!inputs.includes(method)){
                           msg.channel.send("Sorry, I cannot calculate your footprint from this type of fuel!");
                           break;
@@ -130,7 +136,7 @@ bot.on("message", msg => {
             case "h":
             case "help":
                 // in alphabetical order
-                msg.channel.send("```css\nLIST OF COMMANDS:\n\n"
+                msg.channel.send("```md\nLIST OF COMMANDS:\n\n"
                     + ".calculate - calculate carbon emissions\n"
                         + "\tfood - food (ex: .calculate f beef 2)\n"
                             + "\t\tPossible inputs:\n\t\tMeats: Beef, Pork, Lamb\n"
@@ -139,11 +145,11 @@ bot.on("message", msg => {
                             + "\t\tDairy: Milk, Cheese, Butter, Ice cream\n"
                             + "\t\tWater: Tap, Bottled, Fancy bottled\n"
                         + "\ttravel - (ex: .calculate t train 100)\n"
-                            + "\t\tPossible inputs:\n\t\tTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar"
-                        + "\tfuel - (ex: .calculate fuel petrol 10)"
+                            + "\t\tPossible inputs:\n\t\tTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n"
+                        + "\tfuel - (ex: .calculate fuel petrol 10)\n"
                             + "\t\tPossible inputs: Petrol, Diesel, LPG\n"
                     + ".help - show help commands\n"
-                    + ".recycle - see if a material is recyclable (ex: .recyclable plastic)\n"
+                    + ".recycle - see if a material is recyclable (ex: .recycle plastic)\n"
                     + "```"
                 );
                 break;
