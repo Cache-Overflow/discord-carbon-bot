@@ -57,7 +57,7 @@ bot.login(token);
 bot.on('ready', () => {
     console.log("Logged in as " + bot.user.tag);
 
-    bot.channels.cache.get("711322092339200051").send("I am online!");
+    bot.channels.cache.get("711322092339200051").send("I am online! :robot:");
 });
 
 // test function
@@ -446,15 +446,15 @@ function recycleMaterial(material, id) {
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
     if (a == "plastic") {
-		const recycleEmbed = new MessageEmbed()
+		const recycleEmbed = new Discord.MessageEmbed()
 		.setColor('#0xff0000')
 		.setDescription('Enter the type of plastic:')
 		.setThumbnail('')
-		.addFields({name: '**1**', value: 'PETE - Polyethylene Terephthalate ex: soda bottles'}
-					{name: '**2**',value: 'HDPE - High density Polyethylene ex: detergent bottles'}
-					{name: '**3**',value: 'PVC - Polyvinyl Chloride ex: plastic pipes'}
-					{name: '**4**',value: 'LDPE - Low density Polyethylene ex: plastic bags'}
-					{name: '**5**',value: 'PP – Polypropylene ex: clothing and ropes'}
+		.addFields({name: '**1**', value: 'PETE - Polyethylene Terephthalate ex: soda bottles'},
+					{name: '**2**',value: 'HDPE - High density Polyethylene ex: detergent bottles'},
+					{name: '**3**',value: 'PVC - Polyvinyl Chloride ex: plastic pipes'},
+					{name: '**4**',value: 'LDPE - Low density Polyethylene ex: plastic bags'},
+					{name: '**5**',value: 'PP – Polypropylene ex: clothing and ropes'},
 					{name: '**6**',value:'PS – Polystyrene ex: styrofoam'});
         //bot.channels.cache.get(id).send("Enter the type of plastic (ex .1): \n 1 - PETE \n 2 - HDPE \n 3 - PVC\n 4 - LDPE\n 5 - PP\n 6 - PS  \nex: .1");
 		bot.channels.cache.get(id).send(recycleEmbed);
