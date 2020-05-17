@@ -410,19 +410,21 @@ bot.on("message", msg => {
 
 function food(productType, quantity, id) {
     let total = 0;
+    
     var arr = [
-        ["beef", 27], ["pork", 12.1], ["lamb", 39.2],
-        ["chicken", 6.9], ["turkey", 10.9],
-        ["eggs", 4.8], ["potatoes", 2.9], ["rice", 2.7],
-        ["tuna", 6.1],
-        ["milk", 1.9], ["cheese", 13.5], ["nuts", 2.3], ["beans", 2], ["tofu", 2],
-        ["vegetables", 2], ["fruit", 1.1], ["lentils", .9]
+        ["beef", 27, ":cow:"], ["pork", 12.1, ":pig:"], ["lamb", 39.2,":sheep:"],
+        ["chicken", 6.9, ":chicken:"], ["turkey", 10.9,":turkey:"],
+        ["eggs", 4.8, ":egg:"], ["potatoes", 2.9, ":potato:"], ["rice", 2.7,":rice:"],
+        ["tuna", 6.1,":fish:"],
+        ["milk", 1.9, ":milk:"], ["cheese", 13.5, ":cheese:"], ["nuts", 2.3, ":peanuts:"], ["beans", 2, ":green_heart:"], ["tofu", 2,":green_heart:"],
+        ["vegetables", 2, ":cucumber:"], ["fruit", 1.1, ":kiwi:"], ["lentils", .9,":green_heart:"]
         ];
 
     var product = false;
     for (var i=0; i< arr.length; i++) {
         if (arr[i].includes(productType.toLowerCase())) {
             product = true;
+            var emoji =arr[i][2];
             break;
         }
     }
@@ -436,7 +438,7 @@ function food(productType, quantity, id) {
             total += ((quantity / 1000) * arr[i][1]);
         }
     }
-    bot.channels.cache.get(id).send("Your consumption produces " + total + " kg of CO2!");
+    bot.channels.cache.get(id).send("Your consumption produces " + total + " kg of CO2! "+emoji);
 }
 
 function recycleMaterial(material, id) {
