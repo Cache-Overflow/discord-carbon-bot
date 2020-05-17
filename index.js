@@ -42,7 +42,7 @@ bot.on("message", msg=>{
                 switch (args[1].toLowerCase()) {
                     case "f":
                     case "food":
-                        if(args[1] == undefined || args[2] == undefined){
+                        if(args[2] == undefined || args[3] == undefined){
                             msg.channel.send("Missing statement.");
                             break;
                         }
@@ -125,7 +125,7 @@ function food(productType, quantity) {
         return;
     }
     if (!arr.includes(productType)) {
-        throw "BadProduct";
+        //say bad product
     }
 
     let total = 0;
