@@ -330,6 +330,8 @@ bot.on("message", msg => {
                         	.setThumbnail('')
                     		.addFields(
                 				{ name: "**Confirmed cases**", value: + myJson.data.summary.total_cases, inline: false },
+												{ name: "**Deaths**", value: + myJson.data.summary.deaths, inline: false },
+												{ name: "**Recovered**", value: + myJson.data.summary.recovered, inline: false },
                     		)
                     		.setTimestamp()
                     		.setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
