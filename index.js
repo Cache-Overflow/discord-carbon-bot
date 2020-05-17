@@ -4,23 +4,10 @@ const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
 const prefix= "."
 bot.login(token);
 
-fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=5000&type=Taxi", {
-  "method": "GET",
-  "headers": {
-"x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
-"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
-}
-})
-.then(function (response) {
-      return response.json();
-    })
-.then(function (myJson) {
-      // var theDATA = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
-      console.log(myJson.carbonEquivalent);
-      // console.log(theDATA);
-    })
-.catch(err => {
-  console.log(err);
+bot.on('ready', () => {
+    console.log("Logged in as " + bot.user.tag);
+
+    bot.channels.cache.get("711322092339200051").send("I am online!");
 });
 
 // test function
@@ -114,6 +101,34 @@ function david(material) {
     var a = material.toLowerCase();
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
+
+    if(a == "plastic"){
+        msg.channel.send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex. .5")
+        if (msg.content.startsWith(".")) {
+            let pargs = msg.content.substring(prefix.length).split(" ");
+
+            switch(pargs[0]){
+                case "1":
+                    return("recyclable!");
+                case "2":
+                    return("recyclable!");
+                case "3":
+                    return("not recyclable!");
+                case "4":
+                    return("recyclable!");
+                case "5":
+                    return("recyclable!");
+                case "6":
+                    return("not recyclable!");
+            }
+    }
+    if(mats.includes(a)) return("recyclable!");
+
+
+    return("not recyclable!");
+
+
     if (mats.includes(a)) return("recyclable!");
     else return("not recyclable!");
+
 }
