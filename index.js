@@ -2,8 +2,12 @@ const Discord = require("discord.js");
 const bot = new Discord.Client();
 const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
 const prefix= "."
+<<<<<<< HEAD
 let recycle = false;
 
+=======
+const fetch = require("node-fetch");
+>>>>>>> 56fe304b984940521974b9abf4ce75fb14e75946
 bot.login(token);
 
 bot.on('ready', () => {
