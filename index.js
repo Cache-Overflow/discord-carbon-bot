@@ -38,7 +38,7 @@ bot.on("message", msg=>{
         //processCommand(command)
         if (args[0].toUpperCase() == "HELP"){
             // this will list all possible commands ***ADD THEM WHEN U CAN***
-            msg.channel.send("***LIST OF COMMANDS***\n"
+            msg.channel.send("LIST OF COMMANDS:\n\n"
                 +"Calculate - (ex: .Calculate beef 2 )");
         }
     }
