@@ -410,7 +410,7 @@ bot.on("message", msg => {
 
 function food(productType, quantity, id) {
     let total = 0;
-    
+
     var arr = [
         ["beef", 27, ":cow:"], ["pork", 12.1, ":pig:"], ["lamb", 39.2,":sheep:"],
         ["chicken", 6.9, ":chicken:"], ["turkey", 10.9,":turkey:"],
@@ -446,7 +446,7 @@ function recycleMaterial(material, id) {
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
     if (a == "plastic") {
-        bot.channels.cache.get(id).send("Enter the type of plastic (1, 2, 3, 4, 5, 6) ex: .1");
+        bot.channels.cache.get(id).send("Enter the type of plastic: \n 1 - PETE \n 2 - HDPE \n 3 - PVC\n 4 - LDPE\n 5 - PP\n 6 - PS  \nex: .1");
         recycle = true;
         return;
     }
