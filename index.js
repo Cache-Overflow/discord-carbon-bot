@@ -9,13 +9,33 @@ bot.on('ready', () => {
 
     bot.channels.cache.get("711322092339200051").send("I am online!");
 });
+// Does an API call to Carbon Footprint calculator.
+// ***
+fetch("https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=5000&type=Taxi", {
+  "method": "GET",
+  "headers": {
+"x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
+"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+}
+})
+.then(function (response) {
+      return response.json();
+    })
+.then(function (myJson) {
+      // var theDATA = JSON.parse('{ "name":"John", "age":30, "city":"New York"}');
+      console.log("The API Data is : "myJson.carbonEquivalent);
+      // console.log(theDATA);
+    })
+.catch(err => {
+  console.log(err);
+});
 
 // test function
 bot.on("message", msg=>{
     if (msg.author == bot.user) { // Prevent bot from responding to its own messages
         return
     }
-
+// Hello
     // test cases
     if (msg.content === "Gabe") {
         msg.channel.send("Yeah hes dirtyy");
