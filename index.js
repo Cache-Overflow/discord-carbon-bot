@@ -323,7 +323,7 @@ bot.on("message", msg => {
                         	.setColor('#0xff0000')
                         	.setTitle('Coronavirus ' + country.charAt(0).toUpperCase() + country.substring(1) + ' Info')
                     		.setURL('https://www.worldometers.info/coronavirus/country/' + country)
-                    		.setDescription('Public Health information about COVID-19 in' + country.charAt(0).toUpperCase() + country.substring(1))
+                    		.setDescription('Public Health information about COVID-19 in ' + country.charAt(0).toUpperCase() + country.substring(1))
                         	.setThumbnail('')
                     		.addFields(
                 				{ name: "**Confirmed cases**", value: + myJson.data.summary.total_cases, inline: false },
@@ -345,9 +345,6 @@ bot.on("message", msg => {
                     case 'calculate':
                         msg.channel.send(helpCalculateEmbed);
                         break;
-										// case "corona":
-										// case "coronavirus":
-										// 	msg.channel.send(coronavirusEmbed);
                     default:
                         msg.channel.send(helpEmbed);
                 }
