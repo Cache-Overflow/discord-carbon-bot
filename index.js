@@ -68,6 +68,7 @@ bot.on("message", msg => {
     if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
     if (msg.content === "ayy") msg.channel.send("lmao");
     if (msg.content === "shankspog") msg.channel.send("<:shankspog:700953540599742604>");
+		if (msg.content === "caFlag") msg.channel.send(":flag_ca:");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
