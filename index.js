@@ -33,7 +33,7 @@ bot.on("message", msg=>{
                 msg.channel.send("Your consumption produces " + lemme2(args[1], args[2]) + " kg of CO2!");
             }
             catch (e) {
-                console.log(e);
+                console.log(e.message);
                 msg.channel.send("Missing arguments after \"calculate\".");
             }
         }
@@ -45,11 +45,11 @@ bot.on("message", msg=>{
             // this will list all possible commands ***ADD THEM WHEN U CAN***
             msg.channel.send("LIST OF COMMANDS:\n\n"
                 + ".calculate - calculate carbon emissions (ex: .Calculate beef 2 )\n"
-                + ".recyclable -    (ex: .Recyclable plastic)\n"
+                + ".recyclable - (ex: .Recyclable plastic)\n"
                 + ".help - show help commands\n");
         }
         else if (args[0].toLowerCase() == "recyclable") {
-            msg.channel.send(args[1] + " is " + david(args[1]))
+            msg.channel.send(args[1].charAt(0).toUpperCase() + args[1].substring(1) + " is " + david(args[1]))
         }
         else {
             msg.channel.send("Unknown command.");
@@ -62,7 +62,7 @@ function lemme2(productType, quantity) {
         throw "NoProduct";
     }
     if (!arr.includes(productType)) {
-        throw "BadProduct"
+        throw "BadProduct";
     }
 
     let total = 0;
@@ -86,7 +86,7 @@ function lemme2(productType, quantity) {
     return (total);
 }
 
-function david(material){
+function david(material) {
     var a = material.toLowerCase();
     let mats = ["plastic", "paper", "cardboard", "glass", "tin", "aluminum", "steel"];
 
