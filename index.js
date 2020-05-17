@@ -68,7 +68,16 @@ bot.on("message", msg => {
                           msg.channel.send("Sorry, I cannot calculate your footprint from this method of travel!");
                           break;
                         }
-
+                        // Turning Common spellings into passable arguments for the API
+                        if (method == "bus"){
+                          method = "ClassicBus";
+                        }
+                        if (method == "car"){
+                          method = "Taxi";
+                        }
+                        if (method == "train"){
+                          method = "NationalTrain";
+                        }
                         // API Code
                         fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromPublicTransit?distance=${dist}&type=${method}`, {
                           "method": "GET",
