@@ -18,7 +18,7 @@ const helpEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-t
 	.addFields(
 		{ name: '**.calculate**', value: "calculates carbon emissions, do .help caluculate for more info\n*ex: .c p plane 10000*", inline: false },
         { name: '.coronavirus', value: "coronavirus information\n**Takes:**\nCountry\n*ex: .coronavirus Canada*", inline: false },
-        { name: '**.info**', value: "about me :shankspog:"},
+        { name: '**.info**', value: "about me", inline: false },
 		{ name: '**.help**', value: 'show help commands', inline: false },
 		{ name: '**.recycle**', value: 'see if a material is recyclable\n**Takes:**\nType\n*ex: .recycle plastic*', inline: false },
 	)
@@ -95,7 +95,6 @@ bot.on("message", msg => {
                                 "x-rapidapi-host": "carbonfootprint1.p.rapidapi.com",
                                 "x-rapidapi-key": "7b83208c3cmsh7f1c745c01060cep1b4260jsn8ccf6057f135"
                             }
-
                         })
                             .then(response => {
                                 return response.json();
@@ -236,10 +235,7 @@ bot.on("message", msg => {
 						console.log(method)
                         if (method == "airplane" || method == "plane"){
                             //plane
-                            // Inputs: DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight
                             method = "LongEconomyClassFlight";
-                            // msg.channel.send("Specify which kind of flight! (DomesticFlight, ShortEconomyClassFlight, ShortBusinessClassFlight, LongEconomyClassFlight, LongPremiumClassFlight, LongBusinessClassFlight, LongFirstClassFlight)")
-                            // break;
 
                             fetch(`https://carbonfootprint1.p.rapidapi.com/CarbonFootprintFromFlight?distance=${dist}&type=${method}`, {
                                 	"method": "GET",
@@ -304,7 +300,7 @@ bot.on("message", msg => {
                             console.log(err);
                         });
                         break;
-                        case "ts":
+                    case "ts":
                     case "tree":
                     case "trees":
                         var weight = args[2];
@@ -333,7 +329,7 @@ bot.on("message", msg => {
                         });
                         break;
                     default:
-                        msg.channel.send("Missing statement.aaaa");
+                        msg.channel.send("Missing statement.");
                 }
                 break;
             case "covid":
@@ -352,16 +348,17 @@ bot.on("message", msg => {
 	                    return response.json();
 		            })
 					.then(myJson => {
-                        const coronavirusEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-topics/embeds.html
+                        const coronavirusEmbed = new Discord.MessageEmbed()
                         	.setColor('#0xff0000')
                         	.setTitle('Coronavirus ' + country.charAt(0).toUpperCase() + country.substring(1) + ' Info')
                     		.setURL('https://www.worldometers.info/coronavirus/country/' + country)
                     		.setDescription('Public Health information about COVID-19 in ' + country.charAt(0).toUpperCase() + country.substring(1))
                         	.setThumbnail('')
                     		.addFields(
-                				{ name: "**Confirmed cases**", value: + myJson.data.summary.total_cases, inline: false },
-												{ name: "**Deaths**", value: + myJson.data.summary.deaths, inline: false },
-												{ name: "**Recovered**", value: + myJson.data.summary.recovered, inline: false },
+                				{ name: "**Confirmed cases**", value: myJson.data.summary.total_cases, inline: false },
+								{ name: "**Deaths**", value: myJson.data.summary.deaths, inline: false },
+                                { name: "**Active Cases**", value: myJson.data.summary.active_cases, inline: false },
+								{ name: "**Recovered**", value: myJson.data.summary.recovered, inline: false },
                     		)
                     		.setTimestamp()
                     		.setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
@@ -384,9 +381,29 @@ bot.on("message", msg => {
                         msg.channel.send(helpEmbed);
                 }
                 break;
+            case "i":
+            case "info":
+            case "information":
+                const infoEmbed = new Discord.MessageEmbed()
+                    .setColor('#0xff0000')
+                    .setTitle('About me!')
+                    .setURL('https://devpost.com/software/carbonbot')
+                    .setAuthor('Cache Overflow', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png', 'https://github.com/Cache-Overflow')
+                    .setDescription('I am a bot that can be added to you discord server. Once added to a server, users can ask me to do multiple environment related tasks. Currently I am able to calculate and output the amount of carbon produced by food, transportation, and trees. I can also do non-carbon related tasks such as checking if a material is recyclable, give coronavirus info, and showing air quality of your city.')
+                    .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
+                    .addFields(
+                        { name: "**Eli Samuel**", value: 'I am a first year computer science student at Concordia University. This is my fourth hackathon.', inline: false },
+                        { name: "**David Lemme**", value: 'I am a first year software engineering student at Concordia University. This is my second hackathon.', inline: false },
+                        { name: "**David Roper**", value: 'I am a first year software engineering student at Concordia University. This is my second hackathon.', inline: false },
+                        { name: "**Andrew Zhang**", value: 'I am a second year mechanical engineering student at the University of Toronto. This is my first software-focused hackathon.', inline: false },
+                    )
+                    .setTimestamp()
+                    .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
+                msg.channel.send(infoEmbed);
+                break;
             case "r":
             case "recycle":
-                if(args[1] == undefined){
+                if(args[1] == undefined) {
                     msg.channel.send("Missing statement.");
                     break;
                 }
@@ -400,6 +417,7 @@ bot.on("message", msg => {
             case "6":
                 if (recycle == true) {
                     msg.channel.send("That plastic is " + recyclePlastic(args[0].toLowerCase()));
+                    recycle = false;
                 }
                 break;
             default:
@@ -450,18 +468,16 @@ function recycleMaterial(material, id) {
 		.setColor('#0xff0000')
         .setDescription('Enter the type of plastic (ex.1): ')
 		.setThumbnail('')
-		.addFields({name: '**1**', value: 'PETE - Polyethylene Terephthalate ex: soda bottles'},
-					{name: '**2**',value: 'HDPE - High density Polyethylene ex: detergent bottles'},
-					{name: '**3**',value: 'PVC - Polyvinyl Chloride ex: plastic pipes'},
-					{name: '**4**',value: 'LDPE - Low density Polyethylene ex: plastic bags'},
-					{name: '**5**',value: 'PP – Polypropylene ex: clothing and ropes'},
-					{name: '**6**',value:'PS – Polystyrene ex: styrofoam'});
-        //bot.channels.cache.get(id).send("Enter the type of plastic (ex .1): \n 1 - PETE \n 2 - HDPE \n 3 - PVC\n 4 - LDPE\n 5 - PP\n 6 - PS  \nex: .1");
+		.addFields({name: '**1**', value: 'PETE - Polyethylene Terephthalate\n*ex: soda bottles*'},
+					{name: '**2**',value: 'HDPE - High density Polyethylene\n*ex: detergent bottles*'},
+					{name: '**3**',value: 'PVC - Polyvinyl Chloride\n*ex: plastic pipes*'},
+					{name: '**4**',value: 'LDPE - Low density Polyethylene\n*ex: plastic bags*'},
+					{name: '**5**',value: 'PP – Polypropylene\n*ex: clothing and ropes*'},
+					{name: '**6**',value:'PS – Polystyrene\n*ex: styrofoam*'});
 		bot.channels.cache.get(id).send(recycleEmbed);
 		recycle = true;
         return;
     }
-
     bot.channels.cache.get(id).send(material.charAt(0).toUpperCase() + material.substring(1) + " is " + (mats.includes(a) ? "recyclable!" : "not recyclable!"));
 }
 
