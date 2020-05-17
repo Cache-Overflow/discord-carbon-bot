@@ -21,6 +21,7 @@ bot.on("message", msg=>{
     }
     if (msg.content === "ayy") {
         msg.channel.send("lmao");
+<<<<<<< HEAD
     }
 
 
@@ -38,6 +39,16 @@ bot.on("message", msg=>{
         //processCommand(command)
     }
     
+=======
+    }
+
+    if (msg.content.startsWith(".")) {
+        let args.msg.content.substring(prefix.length).split(" ");
+        var command = msg.content.substring(1)
+        msg.channel.send(command)
+        processCommand(command)
+    }
+>>>>>>> 1b3b01ca8083e92acbe9a1d7a21b6c097c2cad88
     // if (msg.content.startsWith)
 })
 function lemme2(productType, quantity) {
@@ -53,6 +64,7 @@ function lemme2(productType, quantity) {
         ["Apple", 18]
     ];
 
+<<<<<<< HEAD
     for (var i = 0; i < arr.length; i++) {
         if (productType.toUpperCase() == arr[i][0].toUpperCase()) {
             total += ((quantity / 1000) * arr[i][1]);
@@ -66,6 +78,12 @@ function processCommand(msg) {
     console.log(msg);
 }
 */
+=======
+function processCommand(msg) {
+    console.log(msg);
+}
+
+>>>>>>> 1b3b01ca8083e92acbe9a1d7a21b6c097c2cad88
 
 bot.on('ready', () => {
     console.log("Logged in as " + bot.user.tag);
