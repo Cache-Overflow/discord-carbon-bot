@@ -1,11 +1,6 @@
-/* TODO FOR TOMRROW:
-embeds for cases where user does not imput everything
-for example: .calculate food
-*/
-
 const Discord = require("discord.js");
 const bot = new Discord.Client();
-const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08";
+const token = "NzExMzQzNTIyNDUxODE2NDg5.XsBpRw.25YzHHuUBaJjpl7YD4swyJgpt08"; // THIS IS CHANGED, will not work if you test it
 const prefix= "."
 const fetch = require("node-fetch");
 const helpEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-topics/embeds.html
@@ -17,7 +12,7 @@ const helpEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-t
 	.setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
 	.addFields(
 		{ name: '**.calculate**', value: "calculates carbon emissions, do .help caluculate for more info\n*ex: .c p plane 10000*", inline: false },
-        { name: '.coronavirus', value: "coronavirus information\n**Takes:**\nCountry\n*ex: .coronavirus Canada*", inline: false },
+        { name: '**.coronavirus**', value: "coronavirus information\n**Takes:**\nCountry\n*ex: .coronavirus Canada*", inline: false },
         { name: '**.information**', value: "about me", inline: false },
 		{ name: '**.help**', value: 'show help commands', inline: false },
 		{ name: '**.recycle**', value: 'see if a material is recyclable\n**Takes:**\nType\n*ex: .recycle plastic*', inline: false },
@@ -34,9 +29,9 @@ const helpCalculateEmbed = new Discord.MessageEmbed()
     .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
     .addFields(
         { name: '**air**', value: "**Takes:**\nOzone, NO2, Particulate matter\n*ex: .c air 10 10 10*\n", inline: false },
-        { name: '**airplane**', value: "***Possible inputs***: plane, airplane, domesticflight\nshorteconomyclassflight, shortbusinessclassflight\nlongeconomyclassflight, longpremiumclassflight, longbusinessclassflight, longfirstclassflight\n**Takes:**\nType, Distance\n*ex: .c plane domesticflight 2000*\n", inline: false },
-        { name: '**car**', value: "***Possible inputs***: smalldieselcar, mediumdieselcar, largedieselcar\nmediumhybridcar, largehybridcar\nmediumlpgcar, largelpgcar\nmediumcngcar, largecngcar\n smallpetrolvan, largepetrolvan\nsmalldielselvan, mediumdielselvan, largedielselvan\nlpgvan, cngvan, smallpetrolcar, mediumpetrolcar, largepetrolcar\nsmallmotorbike, mediummotorbike, largemotorbike\n**Takes:**\nType, Distance\n*ex: .c car smalldieselcar 100*\n", inline: false },
-        { name: '**fuel**', value: "***Possible inputs***: Petrol, Diesel, LPG\n**Takes:**\nType, Litres\n*ex: .c fuel petrol 10*\n", inline: false },
+        { name: '**airplane**', value: "***Possible inputs:***\nplane, airplane, domesticflight\nshorteconomyclassflight, shortbusinessclassflight\nlongeconomyclassflight, longpremiumclassflight, longbusinessclassflight, longfirstclassflight\n**Takes:**\nType, Distance\n*ex: .c plane domesticflight 2000*\n", inline: false },
+        { name: '**car**', value: "***Possible inputs:***\nsmalldieselcar, mediumdieselcar, largedieselcar\nmediumhybridcar, largehybridcar\nmediumlpgcar, largelpgcar\nmediumcngcar, largecngcar\n smallpetrolvan, largepetrolvan\nsmalldielselvan, mediumdielselvan, largedielselvan\nlpgvan, cngvan, smallpetrolcar, mediumpetrolcar, largepetrolcar\nsmallmotorbike, mediummotorbike, largemotorbike\n**Takes:**\nType, Distance\n*ex: .c car smalldieselcar 100*\n", inline: false },
+        { name: '**fuel**', value: "***Possible inputs:***\nPetrol, Diesel, LPG\n**Takes:**\nType, Litres\n*ex: .c fuel petrol 10*\n", inline: false },
         { name: '**food**', value: "***Possible inputs:***\n**Meats**: Beef, Pork, Lamb\n"
                 + "**Poultry**: Chicken, Turkey, Duck, Goose, Quail\n"
                 + "**Seafood**: Tuna\n"
@@ -46,7 +41,8 @@ const helpCalculateEmbed = new Discord.MessageEmbed()
                 + "**Takes:**\nType, Number of servings\n"
                 + "*ex: .c f beef 2*\n", inline: false },
         { name: '**transit**', value: "***Possible inputs:***\nTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n**Takes:**\nType, Distance\n*ex: .c t taxi 100*\n", inline: false },
-    )
+		{ name: '**trees**', value: "**Takes:**\nWeight, Unit\n*ex: .c tree 1000 kg*", inline: false }
+	)
     .setTimestamp()
     .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
 
@@ -67,8 +63,6 @@ bot.on("message", msg => {
     // test cases
     if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
     if (msg.content === "ayy") msg.channel.send("lmao");
-    if (msg.content === "shankspog") msg.channel.send("<:shankspog:700953540599742604>");
-		if (msg.content === "caFlag") msg.channel.send(":flag_ca:");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
@@ -162,7 +156,7 @@ bot.on("message", msg => {
                           break;
                         }
                         if (method == "train"){
-                          method = "nationaltrain";
+                          method = "NationalTrain";
                         }
 
                         // Checks if method can be passed to API call
@@ -336,7 +330,57 @@ bot.on("message", msg => {
             case "covid-19":
             case "corona":
             case "coronavirus":
-	            var country = args[1];
+						var country = args[1];
+			/*
+			[ 'corona', 'canada' ]
+			FetchError: invalid json response body at https://coronavirus-map.p.rapidapi.com
+			/v1/summary/region?region=canada reason: Unexpected token < in JSON at position
+			0
+			    at C:\Users\God Eli\Documents\Progamming\discord-carbon-bot\node_modules\nod
+			e-fetch\lib\index.js:272:32
+			    at processTicksAndRejections (internal/process/task_queues.js:97:5) {
+			  type: 'invalid-json'
+			}
+			*/
+			fetch(`https://covid-19-data.p.rapidapi.com/country?format=json&name=${country}`, {
+		  	"method": "GET",
+		  	"headers": {
+		  		"x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+		  		"x-rapidapi-key": "b96c268c46msh6164d76db47a4fcp1bcf5ejsncad1a0d03078"
+		  	}
+		  })
+		  .then(response => {
+		  	return response.json();
+		  })
+		  .then(function (myJson) {
+        // Do stuff with data
+        // flag
+
+				var flag = ":"+"flag_"+myJson[0].code.toLowerCase()+":";
+
+        // Embed Msg
+				const coronavirusEmbed = new Discord.MessageEmbed()
+								.setColor('#0xff0000')
+								.setTitle('Coronavirus ' + country.charAt(0).toUpperCase() + country.substring(1) + ' Info ' + flag)
+								.setURL('https://www.worldometers.info/coronavirus/country/' + country)
+								.setDescription('Public Health information about COVID-19 in ' + country.charAt(0).toUpperCase() + country.substring(1))
+								.addFields(
+								{ name: "**Confirmed cases**", value: myJson[0].confirmed, inline: false },
+				{ name: "**Deaths**", value: myJson[0].deaths, inline: false },
+        // Need New Fetch request here
+												// { name: "**Active Cases**", value: myJson[0].confirmed.summary.active_cases, inline: false },
+				{ name: "**Recovered**", value: myJson[0].recovered, inline: false },
+								)
+								.setTimestamp()
+								.setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
+								msg.channel.send(coronavirusEmbed);
+
+					})
+		  .catch(err => {
+		  	console.log(err);
+
+		  });
+              /* Old Code
 		        fetch(`https://coronavirus-map.p.rapidapi.com/v1/summary/region?region=${country}`, {
 		         	"method": "GET",
 		          	"headers": {
@@ -366,7 +410,7 @@ bot.on("message", msg => {
 					})
 		            .catch(err => {
 		                console.log(err);
-		            });
+		            });*/
 				break;
             case "h":
             case "help":
