@@ -68,6 +68,7 @@ bot.on("message", msg => {
     if (msg.content.toLowerCase() === "carbon") msg.channel.send("DESTROY");
     if (msg.content === "ayy") msg.channel.send("lmao");
     if (msg.content === "shankspog") msg.channel.send("<:shankspog:700953540599742604>");
+		if (msg.content === "caFlag") msg.channel.send(":flag_ca:");
 
     if (msg.content.startsWith(".")) {
         let args = msg.content.substring(prefix.length).split(" ");
@@ -387,13 +388,17 @@ bot.on("message", msg => {
                     .setTitle('About me!')
                     .setURL('https://devpost.com/software/carbonbot')
                     .setAuthor('Cache Overflow', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png', 'https://github.com/Cache-Overflow')
+<<<<<<< HEAD
                     .setDescription('I am a bot that can be added to you discord server. Once added to a server, users can ask me to do multiple environment related tasks. Currently I can calculate the equivalent amount of CO2 in kilograms emitted by eating food, using transportation, and making paper from trees. I can also check if a material is recyclable, report the current coronavirus situation in a country, and calculate the Air Quality Health Index of your city.')
+=======
+                    .setDescription('I am a bot that can be added to your discord server. Once added to a server, users can ask me to do several environmentally oriented tasks. Currently I am able to calculate the total carbon dioxide emitted by producing food, taking transportation, and making paper from trees. I can also do non-carbon related tasks such as checking if a material is recyclable, giving a coronavirus report in countries, and calculating the Air Quality Health Index of your city.')
+>>>>>>> 99efce47162d78b7d1b9ab8f3b478621caf5823c
                     .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
                     .addFields(
                         { name: "**Eli Samuel**", value: 'I am a first year computer science student at Concordia University. This is my fourth hackathon.', inline: false },
                         { name: "**David Lemme**", value: 'I am a first year software engineering student at Concordia University. This is my second hackathon.', inline: false },
                         { name: "**David Roper**", value: 'I am a first year software engineering student at Concordia University. This is my second hackathon.', inline: false },
-                        { name: "**Andrew Zhang**", value: 'I am a second year mechanical engineering student at the University of Toronto. This is my first software-focused hackathon.', inline: false },
+                        { name: "**Andrew Zhang**", value: 'I am a second year mechanical engineering student at the University of Toronto. This is my second hackathon.', inline: false },
                     )
                     .setTimestamp()
                     .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
