@@ -18,7 +18,7 @@ const helpEmbed = new Discord.MessageEmbed() //https://discordjs.guide/popular-t
 	.addFields(
 		{ name: '**.calculate**', value: "calculates carbon emissions, do .help caluculate for more info\n*ex: .c p plane 10000*", inline: false },
         { name: '.coronavirus', value: "coronavirus information\n**Takes:**\nCountry\n*ex: .coronavirus Canada*", inline: false },
-        { name: '**.info**', value: "about me", inline: false },
+        { name: '**.information**', value: "about me", inline: false },
 		{ name: '**.help**', value: 'show help commands', inline: false },
 		{ name: '**.recycle**', value: 'see if a material is recyclable\n**Takes:**\nType\n*ex: .recycle plastic*', inline: false },
 	)
@@ -34,6 +34,8 @@ const helpCalculateEmbed = new Discord.MessageEmbed()
     .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
     .addFields(
         { name: '**air**', value: "**Takes:**\nOzone, NO2, Particulate matter\n*ex: .c air 10 10 10*\n", inline: false },
+        { name: '**airplane**', value: "***Possible inputs***: plane, airplane, domesticflight\nshorteconomyclassflight, shortbusinessclassflight\nlongeconomyclassflight, longpremiumclassflight, longbusinessclassflight, longfirstclassflight\n**Takes:**\nType, Distance\n*ex: .c plane domesticflight 2000*\n", inline: false },
+        { name: '**car**', value: "***Possible inputs***: smalldieselcar, mediumdieselcar, largedieselcar\nmediumhybridcar, largehybridcar\nmediumlpgcar, largelpgcar\nmediumcngcar, largecngcar\n smallpetrolvan, largepetrolvan\nsmalldielselvan, mediumdielselvan, largedielselvan\nlpgvan, cngvan, smallpetrolcar, mediumpetrolcar, largepetrolcar\nsmallmotorbike, mediummotorbike, largemotorbike\n**Takes:**\nType, Distance\n*ex: .c car smalldieselcar 100*\n", inline: false },
         { name: '**fuel**', value: "***Possible inputs***: Petrol, Diesel, LPG\n**Takes:**\nType, Litres\n*ex: .c fuel petrol 10*\n", inline: false },
         { name: '**food**', value: "***Possible inputs:***\n**Meats**: Beef, Pork, Lamb\n"
                 + "**Poultry**: Chicken, Turkey, Duck, Goose, Quail\n"
@@ -43,7 +45,7 @@ const helpCalculateEmbed = new Discord.MessageEmbed()
                 + "**Vegetables/Fruit**: Vegetables, Fruit, Lentils\n"
                 + "**Takes:**\nType, Number of servings\n"
                 + "*ex: .c f beef 2*\n", inline: false },
-        { name: '**travel**', value: "***Possible inputs:***\nTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n**Takes:**\nType, Distance\n*ex: .c t taxi 100*\n", inline: false },
+        { name: '**transit**', value: "***Possible inputs:***\nTaxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar\n**Takes:**\nType, Distance\n*ex: .c t taxi 100*\n", inline: false },
     )
     .setTimestamp()
     .setFooter('Submitted to HackTheEarth2020', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png');
@@ -52,12 +54,10 @@ let recycle = false;
 
 bot.login(token);
 
-// bot.onn('not ready', ())
-
 bot.on('ready', () => {
     console.log("Logged in as " + bot.user.tag);
 
-    bot.channels.cache.get("711322092339200051").send("I am online! :robot:");
+    bot.channels.cache.get("711678532136206419").send("I am online! :robot:");
 });
 
 // test function
@@ -126,7 +126,7 @@ bot.on("message", msg => {
                                 return response.json();
                             })
                             .then(myJson =>{
-                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :fog:`);
+                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} kg of CO2 :fog:`);
                             })
                             .catch(err =>{
                                 console.log(err);
@@ -142,8 +142,7 @@ bot.on("message", msg => {
                         break;
                     // Public Transit to CO2
                     case "t":
-                    case "travel":
-                    case "carbontravel":
+                    case "transit":
                         var method = args[2]; //Possible inputs: Taxi, ClassicBus, EcoBus, Coach, NationalTrain, LightRail, Subway, FerryOnFoot, FerryInCar
                         var dist = args[3];
                         var APIInputs = ["taxi", "classicBus", "ecobus", "coach", "nationaltrain", "lightrail", "subway", "ferryonfoot", "ferryincar"];
@@ -183,7 +182,7 @@ bot.on("message", msg => {
                             return response.json();
                             })
                         .then(function (myJson) {
-                            msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :bullettrain_side:`);
+                            msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} kg of CO2 :bullettrain_side:`);
                             })
                         .catch(err => {
                             console.log(err);
@@ -213,7 +212,7 @@ bot.on("message", msg => {
                                 return response.json();
                             })
                             .then(myJson => {
-                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :truck:`);
+                                return msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} kg of CO2 :truck:`);
                             })
                             .catch(err => {
                                 console.log(err);
@@ -248,7 +247,7 @@ bot.on("message", msg => {
                                   return response.json();
                                 })
                             .then(function (myJson){
-                                msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :airplane:`);
+                                msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} kg of CO2 :airplane:`);
                                 })
                             .catch(err => {
                                 	console.log(err);
@@ -265,7 +264,7 @@ bot.on("message", msg => {
                                   return response.json();
                                 })
                             .then(function (myJson){
-                                msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} :airplane:`);
+                                msg.channel.send(`Carbon Equivalent: ${myJson.carbonEquivalent} kg of CO2 :airplane:`);
                                 })
                             .catch(err => {
                                 	console.log(err);
@@ -353,7 +352,6 @@ bot.on("message", msg => {
                         	.setTitle('Coronavirus ' + country.charAt(0).toUpperCase() + country.substring(1) + ' Info')
                     		.setURL('https://www.worldometers.info/coronavirus/country/' + country)
                     		.setDescription('Public Health information about COVID-19 in ' + country.charAt(0).toUpperCase() + country.substring(1))
-                        	.setThumbnail('')
                     		.addFields(
                 				{ name: "**Confirmed cases**", value: myJson.data.summary.total_cases, inline: false },
 								{ name: "**Deaths**", value: myJson.data.summary.deaths, inline: false },
@@ -389,7 +387,7 @@ bot.on("message", msg => {
                     .setTitle('About me!')
                     .setURL('https://devpost.com/software/carbonbot')
                     .setAuthor('Cache Overflow', 'https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png', 'https://github.com/Cache-Overflow')
-                    .setDescription('I am a bot that can be added to you discord server. Once added to a server, users can ask me to do multiple environment related tasks. Currently I am able to calculate and output the amount of carbon produced by food, transportation, and trees. I can also do non-carbon related tasks such as checking if a material is recyclable, give coronavirus info, and showing air quality of your city.')
+                    .setDescription('I am a bot that can be added to you discord server. Once added to a server, users can ask me to do multiple environment related tasks. Currently I can calculate the equivalent amount of CO2 in kilograms emitted by eating food, using transportation, and making paper from trees. I can also check if a material is recyclable, report the current coronavirus situation in a country, and calculate the Air Quality Health Index of your city.')
                     .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/2/26/Co2_carbon_dioxide_icon.png')
                     .addFields(
                         { name: "**Eli Samuel**", value: 'I am a first year computer science student at Concordia University. This is my fourth hackathon.', inline: false },
